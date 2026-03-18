@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aqqrue - AI Co-Pilot for Accountants</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #09090B;
+  --surface: #18181B;
+  --border: #27272A;
+  --blue: #4EC9E0;
+  --yellow: #C8B49A;
+  --emerald: #10B981;
+  --grad: linear-gradient(135deg, #4EC9E0, #C8B49A);
+  --grad-soft: linear-gradient(135deg, rgba(78,201,224,0.15), rgba(200,180,154,0.08));
+  --text: #FAFAFA;
+  --text-sec: #A8A09A;
+  --text-muted: #52525B;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg); color: var(--text);
+  font-weight: 400; overflow-x: hidden; cursor: none;
+}
+
+/* PROGRESS */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: var(--grad); z-index: 9999; transition: width 0.07s linear;
+}
+
+/* CURSOR */
+#cursor {
+  position: fixed; pointer-events: none; z-index: 9998;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--blue);
+  transform: translate(-50%, -50%);
+  transition: width 0.18s ease, height 0.18s ease, background 0.18s ease;
+}
+#cursor.expand { width: 22px; height: 22px; background: rgba(99,102,241,0.3); }
+
+/* BACK TO TOP */
+#back-top {
+  position: fixed; bottom: 28px; right: 28px; width: 42px; height: 42px;
+  border-radius: 50%; background: var(--grad); border: none; color: #fff;
+  font-size: 18px; cursor: pointer; z-index: 900;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.3s, transform 0.3s;
+  box-shadow: 0 0 24px rgba(99,102,241,0.3);
+}
+#back-top.visible { opacity: 1; transform: translateY(0); }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 48px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.3s, backdrop-filter 0.3s, border-color 0.3s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(9,9,11,0.88);
+  backdrop-filter: blur(18px);
+  border-bottom-color: var(--border);
+}
+.nav-logo {
+  font-size: 18px; font-weight: 800; color: var(--text);
+  text-decoration: none; letter-spacing: -0.5px;
+}
+.nav-logo .logo-accent {
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a {
+  font-size: 14px; font-weight: 500; color: var(--text-muted);
+  text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.btn-grad {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 9px 22px; border-radius: 8px;
+  background: var(--grad); color: #fff; border: none;
+  font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none;
+  position: relative; overflow: hidden;
+  transition: box-shadow 0.25s, transform 0.2s;
+}
+.btn-grad::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0.12); opacity: 0; transition: opacity 0.22s;
+}
+.btn-grad:hover { box-shadow: 0 0 28px rgba(78,201,224,0.4); transform: translateY(-1px); }
+.btn-grad:hover::after { opacity: 1; }
+.btn-grad:active { transform: translateY(0); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 22px; border-radius: 8px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text); font-size: 14px; font-weight: 500;
+  cursor: pointer; text-decoration: none;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.btn-ghost:hover {
+  border-color: rgba(99,102,241,0.4);
+  background: rgba(99,102,241,0.06);
+  transform: translateY(-1px);
+}
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+.mobile-menu {
+  display: none; position: fixed; inset: 0;
+  background: rgba(9,9,11,0.97); z-index: 99;
+  flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: var(--text-sec); font-size: 18px; font-weight: 600; text-decoration: none;
+  padding: 6px 0; transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--text); }
+.mobile-menu .btn-grad { font-size: 15px; color: #fff; margin-top: 8px; }
+.mobile-close {
+  position: absolute; top: 18px; right: 22px;
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-muted); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.mobile-close:hover { color: var(--text); border-color: rgba(99,102,241,0.4); }
+
+/* FADE UP */
+.fade-up {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* GRAD TEXT */
+.grad-text {
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.blue-text { color: #7DD8EC; }
+.yellow-text { color: var(--yellow); }
+
+/* SECTION BASE */
+section { padding: 100px 24px; }
+.container { max-width: 1120px; margin: 0 auto; }
+.section-label {
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px;
+}
+.section-heading {
+  font-family: Impact, 'Arial Narrow', sans-serif;
+  font-size: clamp(28px, 4vw, 46px); font-weight: 400;
+  letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 14px;
+}
+.section-sub {
+  color: var(--text-sec); font-size: 17px; line-height: 1.75; max-width: 580px;
+}
+
+/* HERO */
+#hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; position: relative; overflow: hidden; padding: 140px 24px 80px;
+}
+.hero-bg { position: absolute; inset: 0; }
+.hero-glow {
+  position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%);
+  width: 860px; height: 600px;
+  background: radial-gradient(ellipse, rgba(78,201,224,0.09) 0%, rgba(200,180,154,0.03) 55%, transparent 75%);
+}
+.hero-noise {
+  position: absolute; inset: 0; opacity: 0.25; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+/* WIREFRAME GLOBE */
+.hero-globe-wrap {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -54%);
+  width: 560px; height: 560px;
+  pointer-events: none; z-index: 0;
+}
+.globe-glow {
+  position: absolute; inset: -80px;
+  background: radial-gradient(ellipse, rgba(78,201,224,0.11) 0%, rgba(200,180,154,0.04) 45%, transparent 68%);
+  border-radius: 50%;
+}
+.globe-scene {
+  width: 100%; height: 100%;
+  perspective: 1100px;
+}
+.globe-body {
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  animation: globe-spin 32s linear infinite;
+}
+.globe-outline {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(78,201,224,0.08);
+}
+.globe-lon {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(78,201,224,0.16);
+}
+.g-l-0   { transform: rotateY(0deg); }
+.g-l-20  { transform: rotateY(20deg); }
+.g-l-40  { transform: rotateY(40deg); }
+.g-l-60  { transform: rotateY(60deg); }
+.g-l-80  { transform: rotateY(80deg); }
+.g-l-100 { transform: rotateY(100deg); }
+.g-l-120 { transform: rotateY(120deg); }
+.g-l-140 { transform: rotateY(140deg); }
+.g-l-160 { transform: rotateY(160deg); }
+.globe-equator {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(78,201,224,0.26);
+  transform: rotateX(90deg);
+}
+.globe-lat-30 {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(78,201,224,0.12);
+  transform: rotateX(60deg);
+}
+.globe-lat-30b {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(78,201,224,0.12);
+  transform: rotateX(120deg);
+}
+.globe-accent {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(200,180,154,0.16);
+  transform: rotateX(75deg);
+}
+@keyframes globe-spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+/* MARQUEE */
+.marquee-wrap {
+  overflow: hidden; white-space: nowrap; width: 100%;
+}
+.marquee-track {
+  display: inline-flex; gap: 72px;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-item { font-size: 14px; font-weight: 700; color: var(--text-muted); opacity: 0.45; white-space: nowrap; }
+
+.hero-inner { position: relative; z-index: 1; max-width: 860px; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 20px; border-radius: 999px;
+  background: rgba(78,201,224,0.10);
+  border: 1px solid rgba(78,201,224,0.32);
+  font-size: 13px; font-weight: 600; color: #A8E4F4;
+  margin-bottom: 32px; position: relative;
+  animation: fadeup 0.8s ease both; letter-spacing: 0.4px;
+}
+.hero-badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--grad); flex-shrink: 0;
+  box-shadow: 0 0 6px 2px rgba(78,201,224,0.5);
+}
+
+.hero-h1 {
+  font-family: Impact, 'Arial Narrow', sans-serif;
+  font-size: clamp(38px, 6.5vw, 76px); font-weight: 400;
+  letter-spacing: -1px; line-height: 1.1; margin-bottom: 24px;
+  animation: fadeup 0.85s ease 0.1s both;
+}
+.hero-sub {
+  font-size: 19px; font-weight: 400; color: var(--text-sec);
+  max-width: 540px; margin: 0 auto 40px; line-height: 1.75;
+  animation: fadeup 0.85s ease 0.2s both;
+}
+.hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; animation: fadeup 0.85s ease 0.3s both; }
+.hero-stats { display: flex; justify-content: center; flex-wrap: wrap; margin-top: 72px; animation: fadeup 0.85s ease 0.4s both; }
+.stat-item { padding: 8px 44px; text-align: center; }
+.stat-item + .stat-item { border-left: 1px solid var(--border); }
+.stat-num { font-size: 38px; font-weight: 800; letter-spacing: -1.5px; }
+.stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 500; letter-spacing: 0.5px; }
+
+@keyframes fadeup { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* TRUSTED BY */
+#trusted { padding: 44px 24px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.trusted-inner { max-width: 1120px; margin: 0 auto; text-align: center; }
+.trusted-label { font-size: 11px; color: var(--text-muted); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 28px; font-weight: 600; }
+.trusted-logos { display: flex; justify-content: center; align-items: center; gap: 52px; flex-wrap: wrap; }
+.trusted-logo { font-size: 14px; font-weight: 700; color: var(--text-muted); letter-spacing: -0.2px; opacity: 0.45; transition: opacity 0.2s; }
+.trusted-logo:hover { opacity: 0.8; }
+
+/* CAPABILITIES */
+#capabilities { background: var(--bg); }
+.cap-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+  margin-top: 56px; gap: 1px; background: var(--border);
+}
+.cap-card {
+  padding: 32px; background: var(--bg);
+  transition: background 0.22s; position: relative; overflow: hidden;
+}
+.cap-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--grad); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.cap-card:hover { background: var(--surface); }
+.cap-card:hover::before { transform: scaleX(1); }
+.cap-icon-box {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: rgba(78,201,224,0.1); border: 1px solid rgba(78,201,224,0.18);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+}
+.cap-icon-box svg { width: 18px; height: 18px; }
+.cap-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.3px; }
+.cap-desc { font-size: 14px; color: var(--text-sec); line-height: 1.7; }
+
+/* CAP VISUALS */
+.cap-visual {
+  width: 100%; border-radius: 10px; margin-bottom: 20px; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 14px; min-height: 90px; display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+/* Doc scan visual */
+.cv-doc { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+.cv-doc-row { height: 7px; border-radius: 3px; background: var(--border); }
+.cv-doc-row.hi { background: linear-gradient(90deg, rgba(78,201,224,0.55), rgba(200,180,154,0.45)); animation: scan-pulse 2s ease-in-out infinite; }
+@keyframes scan-pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+.cv-doc-row.short { width: 60%; }
+/* Tags visual */
+.cv-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.cv-tag { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.cv-tag-blue { background: rgba(78,201,224,0.18); color: #7DD8EC; border: 1px solid rgba(78,201,224,0.3); }
+.cv-tag-green { background: rgba(16,185,129,0.15); color: #10B981; border: 1px solid rgba(16,185,129,0.25); }
+.cv-tag-yellow { background: rgba(234,179,8,0.15); color: var(--yellow); border: 1px solid rgba(234,179,8,0.25); }
+/* Match visual */
+.cv-match { display: flex; align-items: center; gap: 8px; width: 100%; }
+.cv-match-col { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.cv-match-item { height: 22px; border-radius: 5px; background: var(--border); display: flex; align-items: center; padding: 0 8px; font-size: 10px; font-weight: 600; color: var(--text-muted); }
+.cv-match-item.matched { background: rgba(16,185,129,0.1); color: #10B981; border: 1px solid rgba(16,185,129,0.2); }
+.cv-match-arrow { font-size: 14px; color: #10B981; }
+/* Bar chart visual */
+.cv-chart { display: flex; align-items: flex-end; gap: 6px; height: 60px; width: 100%; justify-content: center; }
+.cv-bar { width: 18px; border-radius: 4px 4px 0 0; background: var(--border); position: relative; overflow: hidden; }
+.cv-bar::after { content: ''; position: absolute; inset: 0; background: var(--grad); opacity: 0.7; animation: bar-grow 2s ease-in-out infinite alternate; transform-origin: bottom; }
+@keyframes bar-grow { from { transform: scaleY(0.6); } to { transform: scaleY(1); } }
+/* Anomaly visual */
+.cv-list { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+.cv-list-row { height: 20px; border-radius: 5px; background: var(--border); }
+.cv-list-row.anomaly { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); position: relative; display: flex; align-items: center; padding: 0 8px; }
+.cv-list-row.anomaly::after { content: '!'; font-size: 10px; font-weight: 800; color: #EF4444; margin-left: auto; }
+/* Chat visual */
+.cv-chat { display: flex; flex-direction: column; gap: 7px; width: 100%; }
+.cv-chat-bubble { padding: 6px 10px; border-radius: 8px; font-size: 10px; font-weight: 500; line-height: 1.4; }
+.cv-chat-q { background: rgba(78,201,224,0.15); color: #7DD8EC; border: 1px solid rgba(78,201,224,0.22); align-self: flex-start; }
+.cv-chat-a { background: rgba(16,185,129,0.1); color: #10B981; border: 1px solid rgba(16,185,129,0.2); align-self: flex-end; font-size: 9px; }
+
+/* DEMO */
+#demo { background: var(--surface); }
+.demo-split { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.demo-copy p { font-size: 16px; color: var(--text-sec); line-height: 1.8; margin-bottom: 20px; }
+.demo-screen {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+}
+.demo-bar {
+  height: 40px; background: #0f0f11; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 16px; gap: 7px;
+}
+.demo-dot { width: 10px; height: 10px; border-radius: 50%; }
+.demo-filename { font-size: 11px; color: var(--text-muted); margin-left: 10px; font-weight: 500; }
+.demo-body { padding: 22px; }
+.demo-header-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px; font-size: 12px; color: var(--text-muted); font-weight: 500;
+}
+.demo-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; border-radius: 8px; margin-bottom: 7px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 13px; transition: border-color 0.2s;
+}
+.demo-row:hover { border-color: rgba(99,102,241,0.3); }
+.demo-row-name { font-weight: 500; color: var(--text); }
+.demo-row-cat { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.demo-right { text-align: right; }
+.demo-amount { font-weight: 700; font-size: 13px; }
+.demo-tag {
+  font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 5px; margin-top: 3px; display: inline-block;
+}
+.tag-auto { background: rgba(16,185,129,0.12); color: #10B981; }
+.tag-review { background: rgba(234,179,8,0.12); color: var(--yellow); }
+.tag-matched { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+.demo-summary {
+  margin-top: 18px; padding: 16px 18px; border-radius: 10px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(234,179,8,0.06));
+  border: 1px solid rgba(99,102,241,0.18); display: flex; align-items: center; justify-content: space-between;
+}
+.demo-summary-left .num { font-size: 26px; font-weight: 800; letter-spacing: -1px; }
+.demo-summary-left .lbl { font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.8px; margin-top: 2px; }
+.demo-summary-right { font-size: 12px; color: var(--text-muted); text-align: right; line-height: 1.6; }
+
+/* HOW IT WORKS */
+#how { background: var(--bg); }
+.steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 64px; position: relative; }
+.steps-row::before {
+  content: ''; position: absolute; top: 25px;
+  left: calc(16.67% + 14px); right: calc(16.67% + 14px); height: 1px;
+  background: linear-gradient(90deg, rgba(99,102,241,0.5) 0%, rgba(234,179,8,0.4) 100%);
+}
+.step-line { position: absolute; top: 25px; left: calc(16.67% + 14px); height: 2px; width: 0; background: var(--grad); transition: width 1.6s cubic-bezier(0.4,0,0.2,1); z-index: 2; }
+.step { padding: 0 24px; }
+.step-circle {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 22px;
+  position: relative; z-index: 3; transition: border-color 0.25s, box-shadow 0.25s;
+}
+.step:hover .step-circle { border-color: var(--blue); box-shadow: 0 0 18px rgba(99,102,241,0.22); }
+.step-n { font-size: 13px; font-weight: 800; color: var(--blue); }
+.step-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.3px; }
+.step-desc { font-size: 14px; color: var(--text-sec); line-height: 1.7; }
+
+/* IMPACT */
+#impact { background: var(--surface); }
+.impact-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+  background: var(--border); margin-top: 56px;
+}
+.impact-card { padding: 44px 36px; background: var(--surface); transition: background 0.2s; }
+.impact-card:hover { background: #1d1d20; }
+.impact-big { font-size: 52px; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 12px; }
+.impact-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.2px; }
+.impact-body { font-size: 14px; color: var(--text-sec); line-height: 1.65; }
+
+/* INTEGRATIONS */
+#integrations { background: var(--bg); text-align: center; }
+.int-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 48px; }
+.int-chip {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 22px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 14px; font-weight: 600; color: var(--text-sec);
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.int-chip:hover { border-color: rgba(99,102,241,0.4); color: var(--text); transform: translateY(-2px); }
+.int-icon {
+  width: 28px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; letter-spacing: -0.5px;
+}
+
+/* TESTIMONIALS */
+#testimonials { background: var(--surface); }
+.testi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 48px; }
+.testi-card {
+  padding: 32px; border-radius: 12px;
+  background: var(--bg); border: 1px solid var(--border);
+  transition: border-color 0.25s, transform 0.2s;
+}
+.testi-card:hover { border-color: rgba(99,102,241,0.28); transform: translateY(-3px); }
+.testi-quote { font-size: 30px; line-height: 1; font-family: Georgia, serif; font-weight: 900; color: transparent; background: var(--grad); -webkit-background-clip: text; background-clip: text; margin-bottom: 14px; }
+.testi-text { font-size: 15px; color: var(--text-sec); line-height: 1.75; font-style: italic; margin-bottom: 20px; }
+.testi-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.testi-role { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* CONTACT FORM */
+#contact { background: var(--bg); }
+.contact-wrap { max-width: 680px; margin: 0 auto; }
+.contact-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 52px; margin-top: 52px;
+  position: relative; overflow: hidden;
+}
+.contact-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--grad);
+}
+.form-row { margin-bottom: 20px; }
+.form-row label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sec); margin-bottom: 8px; letter-spacing: 0.2px; }
+.form-row input, .form-row select {
+  width: 100%; padding: 12px 16px; border-radius: 8px;
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none; appearance: none;
+}
+.form-row input:focus, .form-row select:focus {
+  outline: none; border-color: rgba(99,102,241,0.5);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+.form-row select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2352525B' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+.form-row select option { background: #1a1a1d; }
+.form-submit { width: 100%; padding: 14px; border-radius: 8px; margin-top: 8px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; background: var(--grad); color: #fff; transition: box-shadow 0.25s, transform 0.2s; }
+.form-submit:hover { box-shadow: 0 0 28px rgba(99,102,241,0.4); transform: translateY(-1px); }
+.form-submit:active { transform: translateY(0); }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* SUCCESS STATE */
+.form-success {
+  display: none; text-align: center; padding: 16px 0;
+}
+.form-success.show { display: block; }
+.form-success h3 { font-size: 26px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 12px; }
+.form-success p { font-size: 16px; color: var(--text-sec); line-height: 1.7; }
+.success-tick {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(234,179,8,0.1));
+  border: 1px solid rgba(99,102,241,0.3);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; font-size: 22px;
+}
+
+/* TWIST */
+#twist {
+  min-height: 80vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; position: relative; overflow: hidden;
+  border-top: 1px solid var(--border);
+}
+.twist-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(99,102,241,0.08) 0%, rgba(234,179,8,0.04) 50%, transparent 75%);
+}
+.twist-inner { position: relative; z-index: 1; max-width: 820px; padding: 0 24px; }
+.twist-line {
+  font-family: Impact, 'Arial Narrow', sans-serif;
+  font-size: clamp(38px, 7vw, 82px); font-weight: 400; letter-spacing: -1px;
+  line-height: 1.08; opacity: 0;
+}
+.twist-line.show { animation: tw-fade 0.75s cubic-bezier(0.2,0,0.2,1) forwards; }
+@keyframes tw-fade { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+.twist-sub { font-size: clamp(16px, 2.2vw, 20px); color: var(--text-sec); line-height: 1.75; margin-top: 28px; opacity: 0; }
+.twist-sub.show { animation: tw-fade 0.75s cubic-bezier(0.2,0,0.2,1) 0.15s forwards; }
+.twist-arrow { display: block; margin-top: 52px; font-size: 28px; color: var(--text-muted); opacity: 0; animation: bounce 1.6s ease-in-out infinite; }
+.twist-arrow.show { opacity: 1; }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+/* VIDEO CV */
+#video-cv { background: var(--bg); }
+.video-outer { max-width: 420px; margin: 0 auto; }
+.video-box {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--border); background: var(--surface); margin-top: 48px;
+}
+.video-embed {
+  width: 100%; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.video-embed .instagram-media {
+  margin: 0 auto !important; min-width: 100% !important; border-radius: 12px !important;
+}
+.video-placeholder-inner { text-align: center; }
+.play-btn {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin: 0 auto 14px; cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.video-embed:hover .play-btn { background: rgba(99,102,241,0.5); transform: scale(1.1); box-shadow: 0 0 24px rgba(99,102,241,0.4); }
+.video-lbl { font-size: 15px; font-weight: 500; color: var(--text-sec); }
+
+/* MEHER */
+#meher { background: var(--surface); }
+.meher-grid { display: grid; grid-template-columns: 280px 1fr; gap: 72px; align-items: center; margin-top: 56px; }
+.meher-photo-col { text-align: center; }
+.meher-photo {
+  width: 230px; height: 230px; border-radius: 50%;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 76px; font-weight: 800; color: #fff;
+  margin: 0 auto; position: relative; overflow: hidden;
+}
+.meher-photo img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center 8%; border-radius: 50%;
+  transform: scale(1.15);
+}
+.meher-ring {
+  position: absolute; inset: -5px; border-radius: 50%;
+  background: var(--grad); z-index: -1;
+  animation: ring-pulse 3s ease-in-out infinite;
+}
+@keyframes ring-pulse { 0%,100% { opacity: 0.28; transform: scale(1); } 50% { opacity: 0.55; transform: scale(1.04); } }
+.meher-caption { font-size: 12px; color: var(--text-muted); margin-top: 14px; font-style: italic; }
+
+.meher-tag {
+  display: inline-block; padding: 4px 14px; border-radius: 999px;
+  background: rgba(78,201,224,0.10); border: 1px solid rgba(78,201,224,0.28);
+  font-size: 12px; font-weight: 600; color: #7DD8EC; letter-spacing: 0.3px; margin-bottom: 20px;
+}
+.meher-h2 { font-family: Impact, 'Arial Narrow', sans-serif; font-size: clamp(36px, 5vw, 64px); font-weight: 400; letter-spacing: -1px; margin-bottom: 22px; }
+.meher-p { font-size: 17px; color: var(--text-sec); line-height: 1.8; margin-bottom: 18px; }
+.meher-p strong { color: var(--text); font-weight: 700; }
+
+/* WHY HIRE */
+#why { background: var(--bg); }
+.why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 48px; }
+.why-card {
+  padding: 34px 28px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s; position: relative; overflow: hidden;
+}
+.why-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+}
+.why-card:hover::after { transform: scaleX(1); }
+.why-card:hover { border-color: rgba(99,102,241,0.28); transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,0.3); }
+.why-num { font-size: 11px; font-weight: 700; color: var(--yellow); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.why-title { font-size: 19px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 12px; }
+.why-desc { font-size: 14px; color: var(--text-sec); line-height: 1.75; }
+
+/* FOOTER */
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 56px 48px 32px; }
+.footer-grid { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-bottom: 48px; }
+.footer-brand { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+.footer-brand .logo-accent { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.footer-brand-sub { font-size: 13px; color: var(--text-muted); margin-top: 7px; max-width: 220px; line-height: 1.6; }
+.footer-cta { font-family: Impact, 'Arial Narrow', sans-serif; font-size: clamp(20px, 3.2vw, 36px); font-weight: 400; letter-spacing: -0.5px; text-align: center; flex: 1; line-height: 1.2; }
+.footer-icons { display: flex; gap: 10px; }
+.f-btn {
+  width: 40px; height: 40px; border-radius: 8px;
+  border: 1px solid var(--border); background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; color: var(--text-muted);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.f-btn:hover { border-color: rgba(99,102,241,0.4); color: var(--text); background: rgba(99,102,241,0.07); }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; text-align: center; font-size: 12px; color: var(--text-muted); }
+
+/* RESPONSIVE */
+@media (max-width: 960px) {
+  .cap-grid, .why-grid, .impact-row { grid-template-columns: 1fr 1fr; }
+  .demo-split { grid-template-columns: 1fr; gap: 48px; }
+  .steps-row { grid-template-columns: 1fr; }
+  .steps-row::before, .step-line { display: none; }
+  .step { padding: 0 0 36px; }
+  .meher-grid { grid-template-columns: 1fr; }
+  .meher-photo-col { margin: 0 auto; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .stat-item { padding: 14px 28px; }
+  .hero-stats { flex-wrap: wrap; gap: 0; }
+  .form-row-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  section { padding: 72px 20px; }
+  .cap-grid, .why-grid, .impact-row { grid-template-columns: 1fr; }
+  .hero-ctas { flex-direction: column; align-items: center; }
+  footer { padding: 48px 20px 28px; }
+  .hero-globe-wrap { width: 320px; height: 320px; }
+  .footer-grid { flex-direction: column; align-items: center; text-align: center; }
+  .contact-card { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="cursor"></div>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" id="mobile-close">&#10005;</button>
+  <a href="#capabilities" onclick="closeMobile()">Capabilities</a>
+  <a href="#how" onclick="closeMobile()">How It Works</a>
+  <a href="#impact" onclick="closeMobile()">Impact</a>
+  <a href="#testimonials" onclick="closeMobile()">Customers</a>
+  <a href="#contact" class="btn-grad" onclick="closeMobile()">Talk to our team</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Aq<span class="logo-accent">qrue</span></a>
+  <div class="nav-links">
+    <a href="#capabilities">Capabilities</a>
+    <a href="#how">How It Works</a>
+    <a href="#impact">Impact</a>
+    <a href="#testimonials">Customers</a>
+    <a href="#contact" class="btn-grad">Talk to our team</a>
+  </div>
+  <button class="hamburger" id="hamburger" onclick="openMobile()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-glow"></div>
+    <div class="hero-globe-wrap">
+      <div class="globe-glow"></div>
+      <div class="globe-scene">
+        <div class="globe-body">
+          <div class="globe-outline"></div>
+          <div class="globe-lon g-l-0"></div>
+          <div class="globe-lon g-l-20"></div>
+          <div class="globe-lon g-l-40"></div>
+          <div class="globe-lon g-l-60"></div>
+          <div class="globe-lon g-l-80"></div>
+          <div class="globe-lon g-l-100"></div>
+          <div class="globe-lon g-l-120"></div>
+          <div class="globe-lon g-l-140"></div>
+          <div class="globe-lon g-l-160"></div>
+          <div class="globe-equator"></div>
+          <div class="globe-lat-30"></div>
+          <div class="globe-lat-30b"></div>
+          <div class="globe-accent"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-noise"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge">AI Co-Pilot for Accountants</div>
+    <h1 class="hero-h1">
+      The only AI toolkit<br>
+      <span class="grad-text">built for accountants.</span>
+    </h1>
+    <p class="hero-sub">
+      Accountants spend 70% of their week on work that requires no accounting degree. Aqqrue handles all of it, so the people you are paying to think can actually think.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-grad">Talk to our team</a>
+      <a href="#demo" class="btn-ghost">See it in action</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num grad-text">10x</div>
+        <div class="stat-label">Team Productivity</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num grad-text">&lt;20 min</div>
+        <div class="stat-label">Month-End Close</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num grad-text">60%</div>
+        <div class="stat-label">Time Reclaimed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUSTED BY -->
+<div id="trusted">
+  <div class="trusted-inner">
+    <div class="trusted-label">Trusted by accounting firms across the United States</div>
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span class="marquee-item">Meridian CPAs</span>
+        <span class="marquee-item">Stonebridge Bookkeeping</span>
+        <span class="marquee-item">Parkhurst &amp; Co</span>
+        <span class="marquee-item">Oakfield Financial</span>
+        <span class="marquee-item">Summit Accounting Group</span>
+        <span class="marquee-item">Clearview Partners</span>
+        <span class="marquee-item">Northgate CPA</span>
+        <span class="marquee-item">Ridgeline Advisors</span>
+        <!-- duplicate for seamless loop -->
+        <span class="marquee-item">Meridian CPAs</span>
+        <span class="marquee-item">Stonebridge Bookkeeping</span>
+        <span class="marquee-item">Parkhurst &amp; Co</span>
+        <span class="marquee-item">Oakfield Financial</span>
+        <span class="marquee-item">Summit Accounting Group</span>
+        <span class="marquee-item">Clearview Partners</span>
+        <span class="marquee-item">Northgate CPA</span>
+        <span class="marquee-item">Ridgeline Advisors</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CAPABILITIES -->
+<section id="capabilities">
+  <div class="container">
+    <p class="section-label fade-up">Capabilities</p>
+    <h2 class="section-heading fade-up">Six things your team will<br>never have to do again.</h2>
+    <p class="section-sub fade-up">Aqqrue plugs into your existing workflow and takes over every task that a skilled accountant should never have been doing in the first place.</p>
+
+    <div class="cap-grid">
+      <div class="cap-card fade-up">
+        <div class="cap-visual">
+          <div class="cv-doc">
+            <div class="cv-doc-row" style="width:90%"></div>
+            <div class="cv-doc-row hi" style="width:75%"></div>
+            <div class="cv-doc-row" style="width:85%"></div>
+            <div class="cv-doc-row hi short"></div>
+            <div class="cv-doc-row" style="width:80%"></div>
+            <div class="cv-doc-row hi" style="width:70%"></div>
+          </div>
+          <div style="position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;color:#10B981;background:rgba(16,185,129,0.12);padding:2px 7px;border-radius:4px;border:1px solid rgba(16,185,129,0.2);">Reading...</div>
+        </div>
+        <div class="cap-title">Instant Document Processing</div>
+        <div class="cap-desc">Drop a bank statement, invoice, or receipt. Aqqrue reads every line and files it in seconds. No manual keying, no missed fields, no copy-paste.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-visual">
+          <div class="cv-tags">
+            <span class="cv-tag cv-tag-blue">Office Supplies</span>
+            <span class="cv-tag cv-tag-green">Revenue</span>
+            <span class="cv-tag cv-tag-yellow">Travel</span>
+            <span class="cv-tag cv-tag-blue">SaaS Tools</span>
+            <span class="cv-tag cv-tag-green">Client Fees</span>
+            <span class="cv-tag cv-tag-blue">Payroll</span>
+            <span class="cv-tag cv-tag-yellow">Cloud Infra</span>
+          </div>
+        </div>
+        <div class="cap-title">Smart Auto-Categorization</div>
+        <div class="cap-desc">The AI learns each client's transaction patterns and categorizes correctly from the start. It gets sharper every month, never fatigued, never inconsistent.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-visual">
+          <div class="cv-match">
+            <div class="cv-match-col">
+              <div class="cv-match-item matched">Invoice #4421</div>
+              <div class="cv-match-item matched">Stripe Oct 3</div>
+              <div class="cv-match-item" style="color:var(--yellow);background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.2);">Transfer?</div>
+            </div>
+            <div class="cv-match-arrow">&#8644;</div>
+            <div class="cv-match-col">
+              <div class="cv-match-item matched">Bank line 12</div>
+              <div class="cv-match-item matched">Bank line 7</div>
+              <div class="cv-match-item">Review</div>
+            </div>
+          </div>
+        </div>
+        <div class="cap-title">One-Click Reconciliation</div>
+        <div class="cap-desc">Bank entries matched to invoices automatically. Mismatches flagged for your review. Month-end close goes from days to under twenty minutes.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-visual">
+          <div class="cv-chart">
+            <div class="cv-bar" style="height:35px;animation-delay:0s"></div>
+            <div class="cv-bar" style="height:55px;animation-delay:0.15s"></div>
+            <div class="cv-bar" style="height:42px;animation-delay:0.3s"></div>
+            <div class="cv-bar" style="height:60px;animation-delay:0.1s"></div>
+            <div class="cv-bar" style="height:48px;animation-delay:0.25s"></div>
+            <div class="cv-bar" style="height:52px;animation-delay:0.05s"></div>
+          </div>
+          <div style="position:absolute;bottom:10px;right:10px;font-size:9px;font-weight:700;color:#818CF8;">P&amp;L / Q4</div>
+        </div>
+        <div class="cap-title">Automated Report Generation</div>
+        <div class="cap-desc">Balance sheets, P&amp;L statements, and custom client reports generated on demand. Your firm's format, your client's numbers, zero manual assembly.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-visual">
+          <div class="cv-list">
+            <div class="cv-list-row"></div>
+            <div class="cv-list-row"></div>
+            <div class="cv-list-row anomaly">Duplicate: $1,200 AWS</div>
+            <div class="cv-list-row"></div>
+            <div class="cv-list-row"></div>
+          </div>
+        </div>
+        <div class="cap-title">Anomaly Detection</div>
+        <div class="cap-desc">Duplicates, misclassifications, and unusual entries are flagged before they become problems. A quiet safety net running under your workflow.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-visual" style="flex-direction:column;align-items:stretch;gap:0;">
+          <div class="cv-chat">
+            <div class="cv-chat-bubble cv-chat-q">"Travel spend for Acme Corp last quarter?"</div>
+            <div class="cv-chat-bubble cv-chat-a">$4,820 across 11 transactions. Flights: $3,100. Hotels: $1,720.</div>
+          </div>
+        </div>
+        <div class="cap-title">Natural Language Queries</div>
+        <div class="cap-desc">Ask your books a question in plain English. An answer in seconds, not after thirty minutes of filtering spreadsheets.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="container">
+    <div class="demo-split">
+      <div class="demo-copy">
+        <p class="section-label fade-up">Product</p>
+        <h2 class="section-heading fade-up">Your books, running themselves.</h2>
+        <p class="fade-up">Every transaction that arrives gets read, categorized, matched, and filed. You see a clean dashboard. Three items need your judgment. Everything else is already done before you open your laptop.</p>
+        <p class="fade-up" style="font-size:15px;color:var(--text-muted);">This is not a productivity tool. This is what accounting software was always supposed to be.</p>
+        <a href="#contact" class="btn-grad fade-up" style="margin-top:8px;width:fit-content;">Talk to our team</a>
+      </div>
+      <div class="fade-up">
+        <div class="demo-screen">
+          <div class="demo-bar">
+            <div class="demo-dot" style="background:#FF5F57"></div>
+            <div class="demo-dot" style="background:#FFBD2E"></div>
+            <div class="demo-dot" style="background:#28CA41"></div>
+            <span class="demo-filename">Aqqrue / October Reconciliation</span>
+          </div>
+          <div class="demo-body">
+            <div class="demo-header-row">
+              <span>47 transactions imported</span>
+              <span style="color:var(--emerald);font-weight:700;">44 handled automatically</span>
+            </div>
+            <div class="demo-row">
+              <div>
+                <div class="demo-row-name">Stripe payout - Oct 3</div>
+                <div class="demo-row-cat">Revenue / Client Services</div>
+              </div>
+              <div class="demo-right">
+                <div class="demo-amount" style="color:#34D399">+$8,400.00</div>
+                <span class="demo-tag tag-auto">Auto-filed</span>
+              </div>
+            </div>
+            <div class="demo-row">
+              <div>
+                <div class="demo-row-name">AWS Invoice #4421</div>
+                <div class="demo-row-cat">Operating Expenses / Cloud</div>
+              </div>
+              <div class="demo-right">
+                <div class="demo-amount">-$312.50</div>
+                <span class="demo-tag tag-auto">Auto-filed</span>
+              </div>
+            </div>
+            <div class="demo-row">
+              <div>
+                <div class="demo-row-name">Transfer - Acct ending 4422</div>
+                <div class="demo-row-cat">Needs your review</div>
+              </div>
+              <div class="demo-right">
+                <div class="demo-amount" style="color:var(--yellow)">-$5,000.00</div>
+                <span class="demo-tag tag-review">Review</span>
+              </div>
+            </div>
+            <div class="demo-row">
+              <div>
+                <div class="demo-row-name">Office Depot #2281</div>
+                <div class="demo-row-cat">Operating Expenses / Office</div>
+              </div>
+              <div class="demo-right">
+                <div class="demo-amount">-$143.20</div>
+                <span class="demo-tag tag-matched">Matched</span>
+              </div>
+            </div>
+            <div class="demo-summary">
+              <div class="demo-summary-left">
+                <div class="num grad-text">93.6%</div>
+                <div class="lbl">PROCESSED WITHOUT YOU</div>
+              </div>
+              <div class="demo-summary-right">3 items need<br>your attention</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <p class="section-label fade-up">How It Works</p>
+    <h2 class="section-heading fade-up">Three steps. Zero grunt work.</h2>
+    <p class="section-sub fade-up">From first connection to a fully automated close, Aqqrue is live in under a week.</p>
+
+    <div class="steps-row" id="steps-row">
+      <div class="step-line" id="step-line"></div>
+      <div class="step fade-up">
+        <div class="step-circle"><span class="step-n">01</span></div>
+        <div class="step-title">Connect Your Stack</div>
+        <div class="step-desc">Link your QuickBooks or Xero account. No migration, no disruption. Live in under five minutes with your existing data intact.</div>
+      </div>
+      <div class="step fade-up">
+        <div class="step-circle"><span class="step-n">02</span></div>
+        <div class="step-title">AI Does the Work</div>
+        <div class="step-desc">Documents are read, transactions categorized, books reconciled. Automatically and accurately every time a new entry comes in.</div>
+      </div>
+      <div class="step fade-up">
+        <div class="step-circle"><span class="step-n">03</span></div>
+        <div class="step-title">You Focus on Clients</div>
+        <div class="step-desc">Review a clean, exception-only dashboard. Make high-value decisions. The admin is handled. Your expertise goes where it actually matters.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="container">
+    <p class="section-label fade-up">Impact</p>
+    <h2 class="section-heading fade-up">Numbers that don't need a footnote.</h2>
+    <p class="section-sub fade-up">Not projections, not estimates. What real firms reported after their first sixty days on Aqqrue.</p>
+
+    <div class="impact-row">
+      <div class="impact-card fade-up">
+        <div class="impact-big grad-text">12 min</div>
+        <div class="impact-title">Average Month-End Close</div>
+        <div class="impact-body">What used to take a full Tuesday now happens before the morning stand-up. Reconciliation, reports, and filing, all done.</div>
+      </div>
+      <div class="impact-card fade-up">
+        <div class="impact-big grad-text">60%</div>
+        <div class="impact-title">Time Reclaimed Per Accountant</div>
+        <div class="impact-body">Over half of each accountant's week returned to them. Most of our users spend it on new client work and higher-margin advisory.</div>
+      </div>
+      <div class="impact-card fade-up">
+        <div class="impact-big grad-text">99.1%</div>
+        <div class="impact-title">Categorization Accuracy</div>
+        <div class="impact-body">After the first month of pattern learning, Aqqrue categorizes with higher consistency than any human team we have benchmarked against.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section id="integrations">
+  <div class="container">
+    <p class="section-label fade-up" style="text-align:center;">Integrations</p>
+    <h2 class="section-heading fade-up" style="text-align:center;">Works with the tools you already use.</h2>
+    <p class="section-sub fade-up" style="margin:0 auto;text-align:center;">No replacement, no migration. Aqqrue sits on top of your existing stack and makes it significantly more powerful.</p>
+    <div class="int-row">
+      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(45,156,219,0.14);color:#2D9CDB;">QB</div>QuickBooks</div>
+      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(19,176,130,0.14);color:#13B082;">X</div>Xero</div>
+      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(255,90,31,0.12);color:#FF5A1F;">SF</div>Salesforce</div>
+      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(52,168,83,0.12);color:#34A853;">GS</div>Google Sheets</div>
+      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(99,102,241,0.12);color:#818CF8;">SL</div>Slack</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <p class="section-label fade-up">Customers</p>
+    <h2 class="section-heading fade-up">Accountants who got their evenings back.</h2>
+
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Month-end used to mean cancelling plans. Four days of chasing clients for receipts, cross-checking line items, catching errors at 11pm. First month on Aqqrue, I was done by 2pm on the first. My team thought I forgot something.</p>
+        <div class="testi-name">Priya K.</div>
+        <div class="testi-role">Managing Partner, 14-person firm, Austin TX</div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">I have been an independent bookkeeper for eleven years. I tried three different "AI tools" before this. They all required more work than they saved. Aqqrue is the first one that actually handled the part I hate, not just the part that looks impressive in a demo.</p>
+        <div class="testi-name">Marcus T.</div>
+        <div class="testi-role">Independent Bookkeeper, Chicago IL</div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">We onboarded three new clients in the same quarter we adopted Aqqrue. Normally that would have broken the team. Instead, no one noticed the extra load. That is the clearest signal I can give about how much it actually moved the needle.</p>
+        <div class="testi-name">Rachel M.</div>
+        <div class="testi-role">Founder, 8-person CPA firm, Denver CO</div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">The categorization accuracy is what got me. After about thirty days, it stopped making the mistakes my junior staff was making. That is when I realised this was not automation for the sake of it. It was genuinely better at the repetitive stuff than people are.</p>
+        <div class="testi-name">David L.</div>
+        <div class="testi-role">Senior Accountant, 22-person firm, Seattle WA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-wrap">
+      <p class="section-label fade-up" style="text-align:center;">Get Started</p>
+      <h2 class="section-heading fade-up" style="text-align:center;">See it with your own books.</h2>
+      <p class="section-sub fade-up" style="margin:0 auto;text-align:center;">Tell us about your firm. We will be in touch within 24 hours. No pitch, no pressure. Just your own data, running on Aqqrue.</p>
+
+      <div class="contact-card fade-up" id="contact-card">
+        <div id="contact-form-wrap">
+          <div class="form-row-2">
+            <div class="form-row">
+              <label for="f-name">Your Name</label>
+              <input type="text" id="f-name" placeholder="Priya Sharma" autocomplete="name" />
+            </div>
+            <div class="form-row">
+              <label for="f-company">Company Name</label>
+              <input type="text" id="f-company" placeholder="Sharma &amp; Associates" />
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-row">
+              <label for="f-linkedin">LinkedIn Profile</label>
+              <input type="url" id="f-linkedin" placeholder="linkedin.com/in/yourname" />
+            </div>
+            <div class="form-row">
+              <label for="f-website">Company Website</label>
+              <input type="url" id="f-website" placeholder="yourfirm.com" />
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="f-size">Active clients per month</label>
+            <select id="f-size">
+              <option value="" disabled selected>How many clients do you manage?</option>
+              <option>1 - 10 clients</option>
+              <option>11 - 30 clients</option>
+              <option>31 - 75 clients</option>
+              <option>76 - 150 clients</option>
+              <option>150+ clients</option>
+            </select>
+          </div>
+          <button class="form-submit" onclick="submitForm()">Book a demo &rarr;</button>
+        </div>
+        <div class="form-success" id="form-success">
+          <div class="success-tick">&#10003;</div>
+          <h3>You're on the list.</h3>
+          <p>Expect a message from the Aqqrue team within 24 hours.<br>Go close some books. You've earned it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE TWIST -->
+<section id="twist">
+  <div class="twist-bg"></div>
+  <div class="twist-inner">
+    <div class="twist-line" id="tw1"><span class="grad-text">Plot twist.</span></div>
+    <div class="twist-line" id="tw2" style="font-size:clamp(20px,3.8vw,42px);font-weight:400;letter-spacing:-0.5px;color:var(--text-sec);margin-top:14px;">You just sat through a job application.</div>
+    <p class="twist-sub" id="tw3">
+      Every word on this page was written by someone applying to market it.<br>
+      Now let's make it official.
+    </p>
+    <span class="twist-arrow" id="tw-arrow">&#8595;</span>
+  </div>
+</section>
+
+<!-- VIDEO CV -->
+<section id="video-cv">
+  <div class="container" style="text-align:center;">
+    <p class="section-label fade-up" style="text-align:center;">Brand Marketing Intern Application</p>
+    <h2 class="section-heading fade-up" style="text-align:center;">Before the resume, the reel.</h2>
+    <p class="section-sub fade-up" style="margin:0 auto;text-align:center;">60 seconds. Because a PDF does not have tone of voice.</p>
+
+    <div class="video-outer">
+      <div class="video-box fade-up">
+        <div class="video-embed" id="video-embed">
+          <blockquote
+            class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/reel/DTgJBc8koy9/?utm_source=ig_embed&utm_campaign=loading"
+            data-instgrm-version="14"
+            style="background:#09090B; border:0; border-radius:12px; margin:0 auto; max-width:420px; min-width:326px; padding:0; width:100%;">
+          </blockquote>
+          <script async src="//www.instagram.com/embed.js"></script>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEHER INTRO -->
+<section id="meher">
+  <div class="container">
+    <div class="meher-grid">
+      <div class="meher-photo-col fade-up">
+        <div class="meher-photo" id="meher-photo">
+          <div class="meher-ring"></div>
+          <img src="meher-photo.jpg" alt="Meher" />
+        </div>
+      </div>
+      <div>
+        <div class="meher-tag fade-up">Brand Marketing Intern Candidate</div>
+        <h2 class="meher-h2 fade-up">Hi, I'm <span class="grad-text">Meher.</span></h2>
+        <p class="meher-p fade-up">
+          I do not know what reconciliation means. I have never touched QuickBooks. And I just spent <strong>5 hours learning everything about accounting software, AI co-pilots, and why your target customer is a 42-year-old bookkeeper in Ohio who dreads the first Tuesday of every month.</strong>
+        </p>
+        <p class="meher-p fade-up">
+          That is not a gap in my CV. That is precisely the skill you are hiring for. You need someone who can understand a complex product deeply enough to make the people it was built for feel like it was built specifically for them. <strong>That is what I do.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY HIRE MEHER -->
+<section id="why">
+  <div class="container">
+    <p class="section-label fade-up">Why Meher</p>
+    <h2 class="section-heading fade-up">Here is what you are actually getting.</h2>
+
+    <div class="why-grid">
+      <div class="why-card fade-up">
+        <div class="why-num">Skill 01</div>
+        <div class="why-title">Marketing Instincts</div>
+        <p class="why-desc">I do not just make content. I think in campaigns, narratives, and systems. I obsess over why people click, share, and trust things. That is not taught in a classroom. You either have it or you do not.</p>
+      </div>
+      <div class="why-card fade-up">
+        <div class="why-num">Skill 02</div>
+        <div class="why-title">Zero Hand-Holding Required</div>
+        <p class="why-desc">You said you want someone who requires zero follow-up. I read a job description, researched your company and your entire competitive landscape, and built you a website. Without being asked. That is the preview.</p>
+      </div>
+      <div class="why-card fade-up">
+        <div class="why-num">Skill 03</div>
+        <div class="why-title">Learns Like a Machine</div>
+        <p class="why-desc">Five hours ago I knew nothing about accounting. Now I can explain reconciliation, transaction categorization, and why Botkeeper struggled to hold its position. Give me a new domain and I will own it in a week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Aq<span class="logo-accent">qrue</span> x Meher</div>
+      <div class="footer-brand-sub">AI co-pilot for accountants. Built by three IIT Madras founders who got tired of watching great accountants do boring work.</div>
+    </div>
+    <div class="footer-cta fade-up">Let's build something<br>they'll remember.</div>
+    <div class="footer-icons">
+      <a href="https://www.linkedin.com/in/meher-roop-kaur-6841aa1b8/" target="_blank" rel="noopener" class="f-btn" title="LinkedIn">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+      </a>
+      <a href="mailto:" class="f-btn" title="Email">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    Built by Meher for Aqqrue's Brand Marketing Intern application. March 2026.
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cursor');
+let mx = 0, my = 0, cx = 0, cy = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor() {
+  cx += (mx - cx) * 0.15;
+  cy += (my - cy) * 0.15;
+  cur.style.left = cx + 'px';
+  cur.style.top = cy + 'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a, button, input, select, .cap-card, .why-card, .testi-card, .demo-row, .int-chip, .impact-card').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('expand'));
+});
+
+// SCROLL
+const pb = document.getElementById('progress-bar');
+const navEl = document.getElementById('navbar');
+const btt = document.getElementById('back-top');
+window.addEventListener('scroll', () => {
+  const s = window.scrollY;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  pb.style.width = (s / h * 100) + '%';
+  navEl.classList.toggle('scrolled', s > 50);
+  btt.classList.toggle('visible', s > 500);
+}, { passive: true });
+
+// MOBILE MENU
+function openMobile() { document.getElementById('mobile-menu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeMobile() { document.getElementById('mobile-menu').classList.remove('open'); document.body.style.overflow = ''; }
+document.getElementById('mobile-close').addEventListener('click', closeMobile);
+// close on outside click (tap on overlay)
+document.getElementById('mobile-menu').addEventListener('click', function(e) {
+  if (e.target === this) closeMobile();
+});
+
+// FADE UP
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const sibs = [...entry.target.parentElement.querySelectorAll('.fade-up')];
+      const idx = sibs.indexOf(entry.target);
+      entry.target.style.transitionDelay = Math.min(idx * 0.08, 0.4) + 's';
+      entry.target.classList.add('visible');
+      fadeObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+
+// STEP LINE
+const stepsEl = document.getElementById('steps-row');
+const lineEl = document.getElementById('step-line');
+if (stepsEl && lineEl) {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        lineEl.style.width = (stepsEl.offsetWidth * 0.665) + 'px';
+      }
+    });
+  }, { threshold: 0.5 }).observe(stepsEl);
+}
+
+// TWIST ANIMATION
+const twistEl = document.getElementById('twist');
+let twistDone = false;
+new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !twistDone) {
+      twistDone = true;
+      setTimeout(() => document.getElementById('tw1').classList.add('show'), 200);
+      setTimeout(() => document.getElementById('tw2').classList.add('show'), 1000);
+      setTimeout(() => document.getElementById('tw3').classList.add('show'), 2000);
+      setTimeout(() => document.getElementById('tw-arrow').classList.add('show'), 2900);
+    }
+  });
+}, { threshold: 0.45 }).observe(twistEl);
+
+// CONTACT FORM
+function submitForm() {
+  const name = document.getElementById('f-name').value.trim();
+  const company = document.getElementById('f-company').value.trim();
+  const size = document.getElementById('f-size').value;
+  if (!name || !company || !size) {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = 'Please fill in Name, Company, and Team Size';
+    btn.style.background = 'rgba(239,68,68,0.8)';
+    setTimeout(() => {
+      btn.textContent = 'Book a demo \u2192';
+      btn.style.background = '';
+    }, 2500);
+    return;
+  }
+  document.getElementById('contact-form-wrap').style.display = 'none';
+  document.getElementById('form-success').classList.add('show');
+}
+
+// SMOOTH ANCHORS
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>

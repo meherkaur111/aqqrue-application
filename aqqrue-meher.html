@@ -296,9 +296,9 @@ section { padding: 100px 24px; }
   font-size: 14px; font-weight: 700; color: var(--text-muted); opacity: 0.55; white-space: nowrap;
 }
 .marquee-logo {
-  height: 20px; width: 20px; object-fit: contain; border-radius: 4px;
-  filter: grayscale(1) brightness(2.2); opacity: 0.7;
+  width: 22px; height: 22px; border-radius: 4px; object-fit: contain; display: block;
 }
+.mq-white { filter: invert(1) brightness(1.2); }
 .marquee-init {
   width: 26px; height: 26px; border-radius: 7px; display: inline-flex;
   align-items: center; justify-content: center; flex-shrink: 0;
@@ -538,12 +538,8 @@ section { padding: 100px 24px; }
   transition: border-color 0.2s, color 0.2s, transform 0.2s;
 }
 .int-chip:hover { border-color: rgba(99,102,241,0.4); color: var(--text); transform: translateY(-2px); }
-.int-icon {
-  width: 28px; height: 28px; border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 800; letter-spacing: -0.5px;
-  overflow: hidden; background: rgba(255,255,255,0.06);
-}
+.int-icon { width: 30px; height: 30px; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface); flex-shrink: 0; }
+.int-icon img { width: 20px; height: 20px; object-fit: contain; display: block; }
 .int-icon img { width: 20px; height: 20px; object-fit: contain; }
 
 /* TESTIMONIALS */
@@ -906,22 +902,22 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="trusted-label">Integrates with the tools your firm already uses</div>
     <div class="marquee-wrap">
       <div class="marquee-track">
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(44,160,44,0.18);color:#4CAF50;">QB</span>QuickBooks</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(19,156,215,0.18);color:#13C5D9;">XE</span>Xero</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(99,91,255,0.15);color:#635BFF;">ST</span>Stripe</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(249,115,22,0.15);color:#F97316;">GU</span>Gusto</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(234,88,12,0.15);color:#EA580C;">BC</span>Bill.com</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(0,180,216,0.15);color:#00B4D8;">PL</span>Plaid</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(139,92,246,0.15);color:#8B5CF6;">DX</span>Dext</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(20,184,166,0.15);color:#14B8A6;">HD</span>Hubdoc</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(44,160,44,0.18);color:#4CAF50;">QB</span>QuickBooks</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(19,156,215,0.18);color:#13C5D9;">XE</span>Xero</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(99,91,255,0.15);color:#635BFF;">ST</span>Stripe</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(249,115,22,0.15);color:#F97316;">GU</span>Gusto</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(234,88,12,0.15);color:#EA580C;">BC</span>Bill.com</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(0,180,216,0.15);color:#00B4D8;">PL</span>Plaid</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(139,92,246,0.15);color:#8B5CF6;">DX</span>Dext</span>
-        <span class="marquee-item"><span class="marquee-init" style="background:rgba(20,184,166,0.15);color:#14B8A6;">HD</span>Hubdoc</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/quickbooks/2CA01C" alt="">QuickBooks</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/xero/13B5EA" alt="">Xero</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/stripe/635BFF" alt="">Stripe</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/gusto/F45D48" alt="">Gusto</span>
+        <span class="marquee-item"><img class="marquee-logo mq-white" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/salesforce.svg" alt="">Salesforce</span>
+        <span class="marquee-item"><img class="marquee-logo mq-white" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/slack.svg" alt="">Slack</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/googlesheets/34A853" alt="">Google Sheets</span>
+        <span class="marquee-item"><img class="marquee-logo mq-white" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/hubspot.svg" alt="">HubSpot</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/quickbooks/2CA01C" alt="">QuickBooks</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/xero/13B5EA" alt="">Xero</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/stripe/635BFF" alt="">Stripe</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/gusto/F45D48" alt="">Gusto</span>
+        <span class="marquee-item"><img class="marquee-logo mq-white" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/salesforce.svg" alt="">Salesforce</span>
+        <span class="marquee-item"><img class="marquee-logo mq-white" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/slack.svg" alt="">Slack</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://cdn.simpleicons.org/googlesheets/34A853" alt="">Google Sheets</span>
+        <span class="marquee-item"><img class="marquee-logo mq-white" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/hubspot.svg" alt="">HubSpot</span>
       </div>
     </div>
   </div>
@@ -1310,13 +1306,13 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <h2 class="section-heading fade-up" style="text-align:center;">No ripping and replacing. It just plugs in.</h2>
     <p class="section-sub fade-up" style="margin:0 auto;text-align:center;">Whatever your firm runs on, Aqqrue connects to it. No migration, no disruption, no excuse to delay.</p>
     <div class="int-row">
-      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(44,160,44,0.18);color:#4CAF50;font-weight:800;font-size:11px;">QB</div>QuickBooks</div>
-      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(19,156,215,0.18);color:#13C5D9;font-weight:800;font-size:11px;">XE</div>Xero</div>
-      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(0,161,224,0.15);color:#00A1E0;font-weight:800;font-size:11px;">SF</div>Salesforce</div>
-      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(52,168,83,0.15);color:#34A853;font-weight:800;font-size:11px;">GS</div>Google Sheets</div>
-      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(74,21,75,0.35);color:#E01E5A;font-weight:800;font-size:11px;">SL</div>Slack</div>
-      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(99,91,255,0.15);color:#635BFF;font-weight:800;font-size:11px;">ST</div>Stripe</div>
-      <div class="int-chip fade-up"><div class="int-icon" style="background:rgba(249,115,22,0.15);color:#F97316;font-weight:800;font-size:11px;">GU</div>Gusto</div>
+      <div class="int-chip fade-up"><div class="int-icon"><img src="https://cdn.simpleicons.org/quickbooks/2CA01C" alt="QuickBooks"></div>QuickBooks</div>
+      <div class="int-chip fade-up"><div class="int-icon"><img src="https://cdn.simpleicons.org/xero/13B5EA" alt="Xero"></div>Xero</div>
+      <div class="int-chip fade-up"><div class="int-icon" style="background:#fff;"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/salesforce.svg" alt="Salesforce" style="filter:invert(0);"></div>Salesforce</div>
+      <div class="int-chip fade-up"><div class="int-icon"><img src="https://cdn.simpleicons.org/googlesheets/34A853" alt="Google Sheets"></div>Google Sheets</div>
+      <div class="int-chip fade-up"><div class="int-icon" style="background:#fff;"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/slack.svg" alt="Slack" style="filter:invert(0);"></div>Slack</div>
+      <div class="int-chip fade-up"><div class="int-icon"><img src="https://cdn.simpleicons.org/stripe/635BFF" alt="Stripe"></div>Stripe</div>
+      <div class="int-chip fade-up"><div class="int-icon"><img src="https://cdn.simpleicons.org/gusto/F45D48" alt="Gusto"></div>Gusto</div>
     </div>
   </div>
 </section>

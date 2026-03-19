@@ -898,7 +898,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 </div>
 
 <!-- APPLE-STYLE SCROLL REVEAL STAGE -->
-<div id="scroll-stage" style="height:320vh;position:relative;">
+<div id="scroll-stage" style="height:260vh;position:relative;">
   <div style="position:sticky;top:0;height:100vh;overflow:hidden;background:var(--bg);">
 
     <!-- Ambient glow -->
@@ -958,174 +958,287 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   </div>
 </div>
 
-<!-- CAPABILITIES SCROLL STAGE -->
-<div id="cap-stage" style="height:900vh;position:relative;">
-  <div style="position:sticky;top:0;height:100vh;overflow:hidden;background:#09090B;">
+<!-- CAPABILITIES SCROLL STAGE (Apple Highlights style) -->
+<style>
+@keyframes laser-scan {
+  0%   { top:8%;  opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { top:92%; opacity:0; }
+}
+@keyframes tag-float-1 { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-14px) rotate(1deg)} }
+@keyframes tag-float-2 { 0%,100%{transform:translateY(0) rotate(2deg)} 50%{transform:translateY(-10px) rotate(-1deg)} }
+@keyframes tag-float-3 { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-18px) rotate(2deg)} }
+@keyframes match-draw  { from{width:0} to{width:100%} }
+@keyframes chat-pop    { from{opacity:0;transform:scale(0.85) translateY(10px)} to{opacity:1;transform:scale(1) translateY(0)} }
+@keyframes bar-rise    { from{height:0} to{height:var(--h)} }
+@keyframes anomaly-blink { 0%,100%{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.3)} 50%{background:rgba(239,68,68,0.22);border-color:rgba(239,68,68,0.6)} }
+.cap-slide { min-width:100vw; height:100%; display:flex; }
+.cap-slide-left {
+  width:50%; display:flex; flex-direction:column; justify-content:center;
+  padding:clamp(40px,6vw,100px) clamp(32px,4vw,72px) clamp(40px,6vw,100px) clamp(40px,6vw,100px);
+}
+.cap-slide-right {
+  width:50%; display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.cap-num-bg {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(100px,14vw,180px); font-weight:800; line-height:1;
+  position:absolute; right:-10px; top:50%; transform:translateY(-50%);
+  opacity:0.04; color:#fff; pointer-events:none; user-select:none;
+  letter-spacing:-8px;
+}
+.cap-label-num {
+  font-size:11px; font-weight:700; letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:18px;
+}
+.cap-slide-h2 {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(30px,4.5vw,58px); font-weight:600;
+  letter-spacing:-1.5px; line-height:1.08; margin-bottom:20px;
+}
+.cap-slide-p {
+  font-size:clamp(14px,1.4vw,17px); color:var(--text-sec);
+  line-height:1.78; max-width:440px;
+}
+/* Document card visual */
+.vis-doc {
+  width:clamp(200px,28vw,320px); background:#141416;
+  border:1px solid #2A2A2C; border-radius:14px;
+  padding:24px; position:relative; overflow:hidden;
+  box-shadow:0 24px 64px rgba(0,0,0,0.55);
+}
+.vis-doc-line { height:7px; border-radius:4px; margin-bottom:10px; background:#27272A; }
+.vis-doc-line.hi { background:linear-gradient(90deg,rgba(78,201,224,0.5),rgba(78,201,224,0.2)); animation:scan-pulse 2s ease-in-out infinite; }
+.vis-doc-laser {
+  position:absolute; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(78,201,224,0.9) 40%,rgba(200,180,154,0.6) 60%,transparent 100%);
+  animation:laser-scan 2.8s ease-in-out infinite;
+  box-shadow:0 0 12px rgba(78,201,224,0.6);
+}
+/* Tags visual */
+.vis-tags { position:relative; width:clamp(260px,36vw,420px); height:280px; }
+.vis-tag {
+  position:absolute; font-size:clamp(11px,1.1vw,14px); font-weight:700;
+  padding:8px 18px; border-radius:999px; white-space:nowrap;
+  border:1px solid; backdrop-filter:blur(4px);
+}
+/* Reconciliation visual */
+.vis-recon { display:flex; gap:28px; align-items:center; width:clamp(260px,34vw,400px); }
+.vis-recon-col { flex:1; display:flex; flex-direction:column; gap:8px; }
+.vis-recon-item {
+  padding:10px 14px; border-radius:8px; font-size:clamp(9px,0.85vw,12px);
+  font-weight:600; border:1px solid; text-align:center;
+}
+.vis-recon-item.matched { background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.28); color:#10B981; }
+.vis-recon-item.pending { background:rgba(200,180,154,0.08); border-color:rgba(200,180,154,0.25); color:#C8B49A; }
+.vis-recon-arrow { font-size:26px; color:var(--blue); flex-shrink:0; }
+/* Chart visual */
+.vis-chart { display:flex; align-items:flex-end; gap:10px; height:180px; padding:0 20px; }
+.vis-bar {
+  flex:1; border-radius:6px 6px 0 0; min-width:28px;
+  background:linear-gradient(180deg,var(--blue),rgba(78,201,224,0.3));
+  animation:bar-grow 1.2s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+/* Anomaly visual */
+.vis-list { width:clamp(240px,30vw,360px); display:flex; flex-direction:column; gap:8px; }
+.vis-list-row {
+  padding:11px 16px; border-radius:8px; font-size:clamp(10px,0.9vw,13px);
+  display:flex; justify-content:space-between; align-items:center;
+  background:#141416; border:1px solid #27272A; font-weight:500;
+}
+.vis-list-row.anomaly { animation:anomaly-blink 1.6s ease-in-out infinite; color:#F87171; font-weight:700; }
+/* Chat visual */
+.vis-chat { display:flex; flex-direction:column; gap:12px; width:clamp(240px,32vw,380px); }
+.vis-bubble {
+  padding:14px 18px; border-radius:14px; font-size:clamp(12px,1.1vw,15px);
+  line-height:1.55; animation:chat-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.vis-bubble.q {
+  background:rgba(78,201,224,0.08); border:1px solid rgba(78,201,224,0.2);
+  color:var(--text-sec); align-self:flex-end; border-radius:14px 14px 2px 14px;
+}
+.vis-bubble.a {
+  background:#1C1C1E; border:1px solid #2A2A2C;
+  color:var(--text); border-radius:14px 14px 14px 2px;
+}
+/* Slide accent glows */
+.cap-slide:nth-child(1) .cap-slide-left { background:radial-gradient(ellipse 80% 60% at 0% 50%,rgba(78,201,224,0.04) 0%,transparent 70%); }
+.cap-slide:nth-child(2) .cap-slide-left { background:radial-gradient(ellipse 80% 60% at 0% 50%,rgba(16,185,129,0.04) 0%,transparent 70%); }
+.cap-slide:nth-child(3) .cap-slide-left { background:radial-gradient(ellipse 80% 60% at 0% 50%,rgba(139,92,246,0.04) 0%,transparent 70%); }
+.cap-slide:nth-child(4) .cap-slide-left { background:radial-gradient(ellipse 80% 60% at 0% 50%,rgba(200,180,154,0.06) 0%,transparent 70%); }
+.cap-slide:nth-child(5) .cap-slide-left { background:radial-gradient(ellipse 80% 60% at 0% 50%,rgba(239,68,68,0.04) 0%,transparent 70%); }
+.cap-slide:nth-child(6) .cap-slide-left { background:radial-gradient(ellipse 80% 60% at 0% 50%,rgba(78,201,224,0.04) 0%,transparent 70%); }
+/* Mobile: stack vertically */
+@media(max-width:768px){
+  .cap-slide { flex-direction:column; min-width:100vw; overflow-y:auto; }
+  .cap-slide-left,.cap-slide-right { width:100%; padding:40px 24px; }
+  .cap-slide-right { height:260px; }
+  .cap-num-bg { display:none; }
+}
+</style>
 
-    <!-- Glow -->
-    <div id="cg-glow" style="position:absolute;inset:0;opacity:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(78,201,224,0.07) 0%,transparent 70%);"></div>
+<div id="cap-stage">
+  <div id="cap-sticky" style="height:100vh;overflow:hidden;position:relative;background:#09090B;">
 
-    <!-- MacBook scene -->
-    <div style="position:absolute;top:0;left:0;right:0;height:58%;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;">
-      <div id="mac-body" style="width:min(680px,88vw);transform:translateY(100vh);position:relative;">
+    <!-- Sticky header -->
+    <div style="position:absolute;top:0;left:0;right:0;z-index:20;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(9,9,11,0.9) 0%,transparent 100%);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);">6 things they were never hired to do</div>
+      <div id="cap-counter" style="font-size:13px;color:var(--text-muted);font-weight:600;font-family:'Space Grotesk',sans-serif;">01 / 06</div>
+    </div>
 
-        <!-- Lid -->
-        <div id="mac-lid" style="width:100%;padding-bottom:60%;background:#1C1C1E;border-radius:12px 12px 2px 2px;border:1.5px solid #3A3A3C;transform:rotateX(-82deg);transform-origin:bottom center;transform-style:preserve-3d;position:relative;box-shadow:0 -4px 40px rgba(78,201,224,0.1);">
-          <div style="position:absolute;inset:5px;background:#09090B;border-radius:7px;overflow:hidden;">
-            <div style="position:absolute;top:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#2A2A2C;z-index:10;"></div>
+    <!-- Horizontal track -->
+    <div id="cap-track" style="display:flex;height:100%;will-change:transform;">
 
-            <!-- Screen scenes -->
-            <div id="cap-s0" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;opacity:1;">
-              <div style="font-size:8px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">Aqqrue AI</div>
-              <div style="font-size:clamp(10px,1.6vw,15px);font-weight:700;text-align:center;color:#FAFAFA;line-height:1.35;letter-spacing:-0.3px;">6 tasks your accountants<br>were definitely not hired to do.</div>
-              <div style="margin-top:10px;font-size:8px;color:#52525B;">scroll to explore</div>
-            </div>
-
-            <div id="cap-s1" style="position:absolute;inset:0;padding:12px;opacity:0;">
-              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">01 / DOCUMENT PROCESSING</div>
-              <div style="background:#141416;border-radius:5px;padding:8px;display:flex;flex-direction:column;gap:4px;height:calc(100% - 22px);">
-                <div style="height:4px;background:#27272A;border-radius:2px;width:90%;"></div>
-                <div style="height:4px;background:rgba(78,201,224,0.35);border-radius:2px;width:75%;"></div>
-                <div style="height:4px;background:#27272A;border-radius:2px;width:85%;"></div>
-                <div style="height:4px;background:rgba(78,201,224,0.35);border-radius:2px;width:62%;"></div>
-                <div style="height:4px;background:#27272A;border-radius:2px;width:80%;"></div>
-                <div style="margin-top:auto;font-size:7px;color:#10B981;font-weight:700;">Reading complete ✓</div>
-              </div>
-            </div>
-
-            <div id="cap-s2" style="position:absolute;inset:0;padding:12px;opacity:0;">
-              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">02 / AUTO-CATEGORIZATION</div>
-              <div style="background:#141416;border-radius:5px;padding:8px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start;height:calc(100% - 22px);">
-                <span style="font-size:6px;font-weight:700;background:rgba(78,201,224,0.12);color:#4EC9E0;border:1px solid rgba(78,201,224,0.25);padding:2px 6px;border-radius:4px;">Office Supplies</span>
-                <span style="font-size:6px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 6px;border-radius:4px;">Revenue</span>
-                <span style="font-size:6px;font-weight:700;background:rgba(200,180,154,0.12);color:#C8B49A;border:1px solid rgba(200,180,154,0.25);padding:2px 6px;border-radius:4px;">Travel</span>
-                <span style="font-size:6px;font-weight:700;background:rgba(78,201,224,0.12);color:#4EC9E0;border:1px solid rgba(78,201,224,0.25);padding:2px 6px;border-radius:4px;">SaaS Tools</span>
-                <span style="font-size:6px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 6px;border-radius:4px;">Client Fees</span>
-                <span style="font-size:6px;font-weight:700;background:rgba(78,201,224,0.12);color:#4EC9E0;border:1px solid rgba(78,201,224,0.25);padding:2px 6px;border-radius:4px;">Payroll</span>
-              </div>
-            </div>
-
-            <div id="cap-s3" style="position:absolute;inset:0;padding:12px;opacity:0;">
-              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">03 / ONE-CLICK RECONCILIATION</div>
-              <div style="background:#141416;border-radius:5px;padding:8px;display:flex;gap:6px;height:calc(100% - 22px);">
-                <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
-                  <div style="font-size:5px;color:#52525B;margin-bottom:1px;">INVOICES</div>
-                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#10B981;">Invoice #4421 ✓</div>
-                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#10B981;">Stripe Oct 3 ✓</div>
-                  <div style="background:rgba(200,180,154,0.08);border:1px solid rgba(200,180,154,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#C8B49A;">Transfer?</div>
-                </div>
-                <div style="display:flex;align-items:center;font-size:14px;color:#4EC9E0;">⇄</div>
-                <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
-                  <div style="font-size:5px;color:#52525B;margin-bottom:1px;">BANK</div>
-                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#10B981;">Bank line 12 ✓</div>
-                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#10B981;">Bank line 7 ✓</div>
-                  <div style="background:#141418;border:1px solid #27272A;border-radius:3px;padding:2px 4px;font-size:6px;color:#52525B;">Review</div>
-                </div>
-              </div>
-            </div>
-
-            <div id="cap-s4" style="position:absolute;inset:0;padding:12px;opacity:0;">
-              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">04 / AUTOMATED REPORTS</div>
-              <div style="background:#141416;border-radius:5px;padding:8px;height:calc(100% - 22px);display:flex;flex-direction:column;gap:4px;">
-                <div style="display:flex;justify-content:space-between;font-size:6px;color:#52525B;"><span>P&amp;L Q4</span><span style="color:#10B981;">Ready ✓</span></div>
-                <div style="display:flex;gap:3px;flex:1;align-items:flex-end;">
-                  <div style="flex:1;background:rgba(78,201,224,0.25);border-radius:2px 2px 0 0;height:55%;"></div>
-                  <div style="flex:1;background:rgba(78,201,224,0.4);border-radius:2px 2px 0 0;height:80%;"></div>
-                  <div style="flex:1;background:rgba(78,201,224,0.35);border-radius:2px 2px 0 0;height:65%;"></div>
-                  <div style="flex:1;background:rgba(78,201,224,0.55);border-radius:2px 2px 0 0;height:100%;"></div>
-                  <div style="flex:1;background:rgba(200,180,154,0.35);border-radius:2px 2px 0 0;height:72%;"></div>
-                  <div style="flex:1;background:rgba(200,180,154,0.5);border-radius:2px 2px 0 0;height:88%;"></div>
-                </div>
-              </div>
-            </div>
-
-            <div id="cap-s5" style="position:absolute;inset:0;padding:12px;opacity:0;">
-              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">05 / ANOMALY DETECTION</div>
-              <div style="background:#141416;border-radius:5px;padding:8px;height:calc(100% - 22px);display:flex;flex-direction:column;gap:3px;">
-                <div style="background:#141418;border-radius:3px;padding:2px 5px;font-size:6px;color:#52525B;">AWS $312.50 — Normal</div>
-                <div style="background:#141418;border-radius:3px;padding:2px 5px;font-size:6px;color:#52525B;">Stripe $8,400 — Normal</div>
-                <div style="background:rgba(234,67,53,0.1);border:1px solid rgba(234,67,53,0.3);border-radius:3px;padding:2px 5px;font-size:6px;color:#F87171;font-weight:700;">⚠ Duplicate: AWS $1,200</div>
-                <div style="background:#141418;border-radius:3px;padding:2px 5px;font-size:6px;color:#52525B;">Office Depot $143 — Normal</div>
-                <div style="margin-top:auto;font-size:6px;color:#F87171;">1 issue flagged before close</div>
-              </div>
-            </div>
-
-            <div id="cap-s6" style="position:absolute;inset:0;padding:12px;opacity:0;">
-              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">06 / NATURAL LANGUAGE QUERIES</div>
-              <div style="background:#141416;border-radius:5px;padding:8px;height:calc(100% - 22px);display:flex;flex-direction:column;justify-content:flex-end;gap:5px;">
-                <div style="background:rgba(78,201,224,0.08);border:1px solid rgba(78,201,224,0.15);border-radius:6px 6px 2px 6px;padding:4px 8px;font-size:7px;color:#A8A09A;align-self:flex-end;">"Travel spend Acme last quarter?"</div>
-                <div style="background:#1C1C1E;border:1px solid #2A2A2C;border-radius:2px 6px 6px 6px;padding:4px 8px;font-size:7px;color:#FAFAFA;">$4,820 across 11 transactions.<br>Flights $3,100 · Hotels $1,720.</div>
-              </div>
-            </div>
-
+      <!-- SLIDE 1: Document Processing -->
+      <div class="cap-slide">
+        <div class="cap-slide-left">
+          <div class="cap-num-bg">01</div>
+          <div class="cap-label-num" style="color:#4EC9E0;">01 &mdash; Document Processing</div>
+          <h2 class="cap-slide-h2">Drop a file.<br>Walk away.<br>It&#8217;s already filed.</h2>
+          <p class="cap-slide-p">Bank statements, invoices, receipts — Aqqrue reads every line and categorizes in seconds. No manual keying, no missed fields, no copy-paste marathon.</p>
+        </div>
+        <div class="cap-slide-right" style="background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(78,201,224,0.06) 0%,transparent 70%);">
+          <div class="vis-doc">
+            <div class="vis-doc-laser"></div>
+            <div style="position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;color:#10B981;background:rgba(16,185,129,0.12);padding:3px 10px;border-radius:5px;border:1px solid rgba(16,185,129,0.22);">Reading...</div>
+            <div class="vis-doc-line" style="width:85%"></div>
+            <div class="vis-doc-line hi" style="width:72%"></div>
+            <div class="vis-doc-line" style="width:90%"></div>
+            <div class="vis-doc-line hi" style="width:58%"></div>
+            <div class="vis-doc-line" style="width:78%"></div>
+            <div class="vis-doc-line hi" style="width:66%"></div>
+            <div class="vis-doc-line" style="width:82%"></div>
+            <div class="vis-doc-line hi" style="width:70%"></div>
+            <div style="margin-top:16px;font-size:11px;color:#4EC9E0;font-weight:600;">47 fields extracted &mdash; 0 errors</div>
           </div>
         </div>
-
-        <!-- Base -->
-        <div style="width:100%;height:18px;background:linear-gradient(180deg,#2C2C2E,#1C1C1E);border-radius:0 0 10px 10px;border:1.5px solid #3A3A3C;border-top:none;box-shadow:0 12px 40px rgba(0,0,0,0.7);"></div>
-
       </div>
+
+      <!-- SLIDE 2: Auto-Categorization -->
+      <div class="cap-slide">
+        <div class="cap-slide-left">
+          <div class="cap-num-bg">02</div>
+          <div class="cap-label-num" style="color:#10B981;">02 &mdash; Auto-Categorization</div>
+          <h2 class="cap-slide-h2">It knows it&#8217;s<br>travel before<br>you open it.</h2>
+          <p class="cap-slide-p">The AI learns each client&#8217;s transaction patterns and categorizes correctly from day one. Gets sharper every month. Never fatigued, never inconsistent.</p>
+        </div>
+        <div class="cap-slide-right" style="background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(16,185,129,0.06) 0%,transparent 70%);">
+          <div class="vis-tags">
+            <span class="vis-tag" style="top:8%;left:5%;color:#4EC9E0;border-color:rgba(78,201,224,0.28);background:rgba(78,201,224,0.07);animation:tag-float-1 4s ease-in-out infinite;">Office Supplies</span>
+            <span class="vis-tag" style="top:4%;right:8%;color:#10B981;border-color:rgba(16,185,129,0.28);background:rgba(16,185,129,0.07);animation:tag-float-2 5s ease-in-out infinite 0.5s;">Revenue</span>
+            <span class="vis-tag" style="top:32%;left:18%;color:#C8B49A;border-color:rgba(200,180,154,0.28);background:rgba(200,180,154,0.07);animation:tag-float-3 4.5s ease-in-out infinite 1s;">Travel</span>
+            <span class="vis-tag" style="top:30%;right:5%;color:#4EC9E0;border-color:rgba(78,201,224,0.28);background:rgba(78,201,224,0.07);animation:tag-float-1 5.5s ease-in-out infinite 0.3s;">SaaS Tools</span>
+            <span class="vis-tag" style="top:58%;left:4%;color:#10B981;border-color:rgba(16,185,129,0.28);background:rgba(16,185,129,0.07);animation:tag-float-2 4.2s ease-in-out infinite 0.8s;">Client Fees</span>
+            <span class="vis-tag" style="top:56%;right:12%;color:#C8B49A;border-color:rgba(200,180,154,0.28);background:rgba(200,180,154,0.07);animation:tag-float-3 4.8s ease-in-out infinite 0.2s;">Payroll</span>
+            <span class="vis-tag" style="top:80%;left:20%;color:#4EC9E0;border-color:rgba(78,201,224,0.28);background:rgba(78,201,224,0.07);animation:tag-float-1 5.2s ease-in-out infinite 1.2s;">Cloud Infra</span>
+            <span class="vis-tag" style="top:78%;right:6%;color:#10B981;border-color:rgba(16,185,129,0.28);background:rgba(16,185,129,0.07);animation:tag-float-2 4.6s ease-in-out infinite 0.6s;">Tax Prep</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: Reconciliation -->
+      <div class="cap-slide">
+        <div class="cap-slide-left">
+          <div class="cap-num-bg">03</div>
+          <div class="cap-label-num" style="color:#A78BFA;">03 &mdash; Reconciliation</div>
+          <h2 class="cap-slide-h2">Month-end close.<br>Done before<br>lunch. Seriously.</h2>
+          <p class="cap-slide-p">Bank entries matched to invoices automatically. Mismatches flagged for your review. What used to take days now takes under twenty minutes.</p>
+        </div>
+        <div class="cap-slide-right" style="background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(139,92,246,0.06) 0%,transparent 70%);">
+          <div class="vis-recon">
+            <div class="vis-recon-col">
+              <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:1.5px;margin-bottom:4px;">INVOICES</div>
+              <div class="vis-recon-item matched">Invoice #4421</div>
+              <div class="vis-recon-item matched">Stripe Oct 3</div>
+              <div class="vis-recon-item matched">AWS Nov 1</div>
+              <div class="vis-recon-item pending">Transfer?</div>
+            </div>
+            <div class="vis-recon-arrow">&#8644;</div>
+            <div class="vis-recon-col">
+              <div style="font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:1.5px;margin-bottom:4px;">BANK</div>
+              <div class="vis-recon-item matched">Bank line 12</div>
+              <div class="vis-recon-item matched">Bank line 7</div>
+              <div class="vis-recon-item matched">Bank line 19</div>
+              <div class="vis-recon-item pending">Review</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: Report Generation -->
+      <div class="cap-slide">
+        <div class="cap-slide-left">
+          <div class="cap-num-bg">04</div>
+          <div class="cap-label-num" style="color:#C8B49A;">04 &mdash; Report Generation</div>
+          <h2 class="cap-slide-h2">Your client wants<br>the P&amp;L.<br>It&#8217;s already done.</h2>
+          <p class="cap-slide-p">Balance sheets, P&amp;L statements, custom client reports — generated on demand in your firm&#8217;s format. Zero manual assembly, zero formatting time.</p>
+        </div>
+        <div class="cap-slide-right" style="background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(200,180,154,0.07) 0%,transparent 70%);">
+          <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;">P&amp;L Statement &mdash; Q4</div>
+            <div class="vis-chart">
+              <div class="vis-bar" style="--h:55%;animation-delay:0.1s"></div>
+              <div class="vis-bar" style="--h:75%;animation-delay:0.2s"></div>
+              <div class="vis-bar" style="--h:62%;animation-delay:0.3s"></div>
+              <div class="vis-bar" style="--h:88%;animation-delay:0.05s;background:linear-gradient(180deg,#C8B49A,rgba(200,180,154,0.3))"></div>
+              <div class="vis-bar" style="--h:70%;animation-delay:0.25s"></div>
+              <div class="vis-bar" style="--h:95%;animation-delay:0.15s;background:linear-gradient(180deg,#4EC9E0,rgba(78,201,224,0.3))"></div>
+            </div>
+            <div style="display:flex;gap:16px;font-size:11px;color:var(--text-muted);">
+              <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: Anomaly Detection -->
+      <div class="cap-slide">
+        <div class="cap-slide-left">
+          <div class="cap-num-bg">05</div>
+          <div class="cap-label-num" style="color:#F87171;">05 &mdash; Anomaly Detection</div>
+          <h2 class="cap-slide-h2">It caught the<br>duplicate charge<br>you would have missed.</h2>
+          <p class="cap-slide-p">Duplicates, misclassifications, unusual entries — flagged before they become your problem. A quiet safety net running under every single transaction.</p>
+        </div>
+        <div class="cap-slide-right" style="background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(239,68,68,0.05) 0%,transparent 70%);">
+          <div class="vis-list">
+            <div class="vis-list-row"><span>Stripe $8,400</span><span style="color:#10B981;font-size:11px;">Normal</span></div>
+            <div class="vis-list-row"><span>AWS $312.50</span><span style="color:#10B981;font-size:11px;">Normal</span></div>
+            <div class="vis-list-row anomaly"><span>&#9888; Duplicate: AWS $1,200</span><span style="font-size:11px;">Flagged</span></div>
+            <div class="vis-list-row"><span>Office Depot $143</span><span style="color:#10B981;font-size:11px;">Normal</span></div>
+            <div class="vis-list-row"><span>Gusto Payroll $14,200</span><span style="color:#10B981;font-size:11px;">Normal</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: Natural Language -->
+      <div class="cap-slide">
+        <div class="cap-slide-left">
+          <div class="cap-num-bg">06</div>
+          <div class="cap-label-num" style="color:#4EC9E0;">06 &mdash; Natural Language</div>
+          <h2 class="cap-slide-h2">Ask your books<br>a question.<br>In plain English.</h2>
+          <p class="cap-slide-p">Before every client call, just ask. &#8220;What did they spend on travel last quarter?&#8221; An answer in seconds, not after thirty minutes of filtering spreadsheets.</p>
+        </div>
+        <div class="cap-slide-right" style="background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(78,201,224,0.06) 0%,transparent 70%);">
+          <div class="vis-chat">
+            <div class="vis-bubble q" style="animation-delay:0.1s">"Travel spend for Acme Corp last quarter?"</div>
+            <div class="vis-bubble a" style="animation-delay:0.6s">$4,820 across 11 transactions.<br><span style="color:var(--text-sec);">Flights: $3,100 &nbsp;&middot;&nbsp; Hotels: $1,720</span></div>
+            <div class="vis-bubble q" style="animation-delay:1.2s">"Any invoices over $5k from October?"</div>
+            <div class="vis-bubble a" style="animation-delay:1.7s">3 found. Stripe $8,400 &nbsp;&middot;&nbsp; Gusto $14,200 &nbsp;&middot;&nbsp; AWS $6,100</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end track -->
+
+    <!-- Progress bar -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.05);">
+      <div id="cap-progress-bar" style="height:100%;background:var(--grad);width:0%;transition:width 0.1s linear;"></div>
     </div>
 
-    <!-- Text zone: bottom 42% -->
-    <div style="position:absolute;bottom:0;left:0;right:0;height:42%;display:flex;align-items:center;justify-content:center;padding:0 24px;">
-
-      <div id="ct-s0" style="position:absolute;text-align:center;opacity:1;">
-        <p class="section-label">Capabilities</p>
-        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,4vw,48px);font-weight:600;letter-spacing:-1.5px;line-height:1.1;">6 tasks your accountants were<br><span style="background:linear-gradient(135deg,#4EC9E0,#C8B49A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">definitely not hired to do.</span></h2>
-      </div>
-
-      <div id="ct-s1" style="position:absolute;text-align:center;opacity:0;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">01</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Instant Document Processing</h3>
-        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Drop a bank statement, invoice, or receipt. Aqqrue reads every line and files it in seconds. No manual keying, no missed fields.</p>
-      </div>
-
-      <div id="ct-s2" style="position:absolute;text-align:center;opacity:0;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">02</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Smart Auto-Categorization</h3>
-        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Learns each client's patterns, gets sharper every month. Never fatigued. Never inconsistent. Never complains about it either.</p>
-      </div>
-
-      <div id="ct-s3" style="position:absolute;text-align:center;opacity:0;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">03</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">One-Click Reconciliation</h3>
-        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Bank entries matched to invoices automatically. Mismatches flagged. Month-end close goes from days to under twenty minutes.</p>
-      </div>
-
-      <div id="ct-s4" style="position:absolute;text-align:center;opacity:0;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">04</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Automated Report Generation</h3>
-        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">P&amp;L, balance sheets, custom client reports on demand. In your format. Done before Friday. Without you doing it.</p>
-      </div>
-
-      <div id="ct-s5" style="position:absolute;text-align:center;opacity:0;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">05</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Anomaly Detection</h3>
-        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Duplicates, odd vendors, unusual amounts — flagged before they become your problem. A quiet safety net that never sleeps.</p>
-      </div>
-
-      <div id="ct-s6" style="position:absolute;text-align:center;opacity:0;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">06</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Natural Language Queries</h3>
-        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Ask your books a question in plain English. Before a client call. In thirty seconds. Not after thirty minutes of filtering.</p>
-      </div>
-
-    </div>
-
-    <!-- Progress dots -->
-    <div id="cap-dots" style="position:absolute;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;opacity:0;">
-      <div class="cap-dot active-dot" data-n="0"></div>
-      <div class="cap-dot" data-n="1"></div>
-      <div class="cap-dot" data-n="2"></div>
-      <div class="cap-dot" data-n="3"></div>
-      <div class="cap-dot" data-n="4"></div>
-      <div class="cap-dot" data-n="5"></div>
-      <div class="cap-dot" data-n="6"></div>
-    </div>
-
-  </div>
-</div>
+  </div><!-- end sticky -->
+</div><!-- end cap-stage -->
 
 <!-- CAPABILITIES -->
 <section id="capabilities" style="position:relative;overflow:hidden;">
@@ -1646,8 +1759,10 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   tl.fromTo('#sr-t2', { opacity:0, y:40 }, { opacity:1, y:0, duration:1 }, 2.8);
   tl.to('#sr-t2', { opacity:0, y:-40, duration:0.7 }, 4.6);
 
-  // Scene 3
+  // Scene 3 — stays visible, no exit (smooth scroll into capabilities)
   tl.fromTo('#sr-t3', { opacity:0, y:40 }, { opacity:1, y:0, duration:1 }, 5.2);
+  // Gently fade everything at the very end so transition to next section is seamless
+  tl.to(['#sr-t3','#sr-glow','#sr-dash-wrap'], { opacity:0, duration:0.4 }, 7.2);
 
 })();
 
@@ -1740,54 +1855,49 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   draw();
 })();
 
-// ===== GSAP: CAPABILITIES LAPTOP SCROLL STAGE =====
+// ===== GSAP: CAPABILITIES HORIZONTAL SCROLL (Apple Highlights style) =====
 (function(){
-  if(typeof gsap === 'undefined') return;
-  const stage = document.getElementById('cap-stage');
-  if(!stage) return;
+  if(typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  const stage   = document.getElementById('cap-stage');
+  const sticky  = document.getElementById('cap-sticky');
+  const track   = document.getElementById('cap-track');
+  const counter = document.getElementById('cap-counter');
+  const progBar = document.getElementById('cap-progress-bar');
+  if(!stage || !track) return;
 
-  const screens = ['cap-s0','cap-s1','cap-s2','cap-s3','cap-s4','cap-s5','cap-s6'];
-  const texts   = ['ct-s0','ct-s1','ct-s2','ct-s3','ct-s4','ct-s5','ct-s6'];
-  const dots    = document.querySelectorAll('.cap-dot');
+  function init(){
+    const n           = track.querySelectorAll('.cap-slide').length;
+    const totalScroll = track.scrollWidth - window.innerWidth;
+    if(totalScroll <= 0) return;
 
-  function setScene(n) {
-    screens.forEach((id,i) => gsap.set('#'+id, { opacity: i===n ? 1 : 0 }));
-    texts.forEach((id,i)   => gsap.set('#'+id, { opacity: i===n ? 1 : 0 }));
-    dots.forEach((d,i) => d.classList.toggle('active-dot', i===n));
+    stage.style.height = (totalScroll + window.innerHeight) + 'px';
+
+    ScrollTrigger.getAll().forEach(st => {
+      if(st.vars && st.vars.id === 'cap-horiz') st.kill();
+    });
+
+    gsap.to(track, {
+      x: -totalScroll,
+      ease: 'none',
+      scrollTrigger: {
+        id: 'cap-horiz',
+        trigger: sticky,
+        pin: true,
+        scrub: 1.2,
+        start: 'top top',
+        end: () => '+=' + totalScroll,
+        onUpdate: self => {
+          const idx = Math.min(n - 1, Math.floor(self.progress * n));
+          if(counter) counter.textContent = String(idx + 1).padStart(2,'0') + ' / 0' + n;
+          if(progBar)  progBar.style.width = (self.progress * 100) + '%';
+        },
+        invalidateOnRefresh: true
+      }
+    });
   }
 
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#cap-stage',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1.0,
-      onUpdate: self => {
-        const p = self.progress;
-        // Determine active scene (0-6)
-        const scene = p < 0.12 ? 0
-          : p < 0.24 ? 1
-          : p < 0.36 ? 2
-          : p < 0.50 ? 3
-          : p < 0.63 ? 4
-          : p < 0.76 ? 5
-          : 6;
-        setScene(scene);
-      }
-    }
-  });
-
-  // Mac slides in from below
-  tl.to('#mac-body', { y: 0, duration:1.0, ease:'power2.out' }, 0);
-  // Glow on
-  tl.to('#cg-glow', { opacity:1, duration:0.8 }, 0.3);
-  // Lid opens
-  tl.to('#mac-lid', { rotateX: -16, duration:1.5, ease:'power2.out' }, 0.5);
-  // Dots appear
-  tl.to('#cap-dots', { opacity:1, duration:0.5 }, 1.2);
-
-  // End: laptop fades out
-  tl.to(['#mac-body','#cap-dots','#cg-glow'], { opacity:0, duration:0.5 }, 9.0);
+  window.addEventListener('load', init);
+  window.addEventListener('resize', () => { ScrollTrigger.refresh(); setTimeout(init, 200); });
 })();
 
 // ===== GSAP: CAPABILITIES 3D ENTRANCE =====

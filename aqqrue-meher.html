@@ -472,6 +472,16 @@ section { padding: 100px 24px; }
 .impact-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.2px; }
 .impact-body { font-size: 14px; color: var(--text-sec); line-height: 1.65; }
 
+/* CAPABILITY SCROLL STAGE */
+.cap-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--border); cursor:pointer;
+  transition:background 0.3s, height 0.3s, border-radius 0.3s;
+}
+.cap-dot.active-dot {
+  background:var(--blue); height:22px; border-radius:4px;
+}
+
 /* FLOATING DEMO CHIPS */
 .float-chip {
   position:absolute; font-size:11px; font-weight:700;
@@ -888,7 +898,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 </div>
 
 <!-- APPLE-STYLE SCROLL REVEAL STAGE -->
-<div id="scroll-stage" style="height:400vh;position:relative;">
+<div id="scroll-stage" style="height:320vh;position:relative;">
   <div style="position:sticky;top:0;height:100vh;overflow:hidden;background:var(--bg);">
 
     <!-- Ambient glow -->
@@ -943,6 +953,175 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
           </div>
         </div>
       </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CAPABILITIES SCROLL STAGE -->
+<div id="cap-stage" style="height:900vh;position:relative;">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden;background:#09090B;">
+
+    <!-- Glow -->
+    <div id="cg-glow" style="position:absolute;inset:0;opacity:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(78,201,224,0.07) 0%,transparent 70%);"></div>
+
+    <!-- MacBook scene -->
+    <div style="position:absolute;top:0;left:0;right:0;height:58%;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;">
+      <div id="mac-body" style="width:min(680px,88vw);transform:translateY(100vh);position:relative;">
+
+        <!-- Lid -->
+        <div id="mac-lid" style="width:100%;padding-bottom:60%;background:#1C1C1E;border-radius:12px 12px 2px 2px;border:1.5px solid #3A3A3C;transform:rotateX(-82deg);transform-origin:bottom center;transform-style:preserve-3d;position:relative;box-shadow:0 -4px 40px rgba(78,201,224,0.1);">
+          <div style="position:absolute;inset:5px;background:#09090B;border-radius:7px;overflow:hidden;">
+            <div style="position:absolute;top:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#2A2A2C;z-index:10;"></div>
+
+            <!-- Screen scenes -->
+            <div id="cap-s0" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;opacity:1;">
+              <div style="font-size:8px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">Aqqrue AI</div>
+              <div style="font-size:clamp(10px,1.6vw,15px);font-weight:700;text-align:center;color:#FAFAFA;line-height:1.35;letter-spacing:-0.3px;">6 tasks your accountants<br>were definitely not hired to do.</div>
+              <div style="margin-top:10px;font-size:8px;color:#52525B;">scroll to explore</div>
+            </div>
+
+            <div id="cap-s1" style="position:absolute;inset:0;padding:12px;opacity:0;">
+              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">01 / DOCUMENT PROCESSING</div>
+              <div style="background:#141416;border-radius:5px;padding:8px;display:flex;flex-direction:column;gap:4px;height:calc(100% - 22px);">
+                <div style="height:4px;background:#27272A;border-radius:2px;width:90%;"></div>
+                <div style="height:4px;background:rgba(78,201,224,0.35);border-radius:2px;width:75%;"></div>
+                <div style="height:4px;background:#27272A;border-radius:2px;width:85%;"></div>
+                <div style="height:4px;background:rgba(78,201,224,0.35);border-radius:2px;width:62%;"></div>
+                <div style="height:4px;background:#27272A;border-radius:2px;width:80%;"></div>
+                <div style="margin-top:auto;font-size:7px;color:#10B981;font-weight:700;">Reading complete ✓</div>
+              </div>
+            </div>
+
+            <div id="cap-s2" style="position:absolute;inset:0;padding:12px;opacity:0;">
+              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">02 / AUTO-CATEGORIZATION</div>
+              <div style="background:#141416;border-radius:5px;padding:8px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start;height:calc(100% - 22px);">
+                <span style="font-size:6px;font-weight:700;background:rgba(78,201,224,0.12);color:#4EC9E0;border:1px solid rgba(78,201,224,0.25);padding:2px 6px;border-radius:4px;">Office Supplies</span>
+                <span style="font-size:6px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 6px;border-radius:4px;">Revenue</span>
+                <span style="font-size:6px;font-weight:700;background:rgba(200,180,154,0.12);color:#C8B49A;border:1px solid rgba(200,180,154,0.25);padding:2px 6px;border-radius:4px;">Travel</span>
+                <span style="font-size:6px;font-weight:700;background:rgba(78,201,224,0.12);color:#4EC9E0;border:1px solid rgba(78,201,224,0.25);padding:2px 6px;border-radius:4px;">SaaS Tools</span>
+                <span style="font-size:6px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 6px;border-radius:4px;">Client Fees</span>
+                <span style="font-size:6px;font-weight:700;background:rgba(78,201,224,0.12);color:#4EC9E0;border:1px solid rgba(78,201,224,0.25);padding:2px 6px;border-radius:4px;">Payroll</span>
+              </div>
+            </div>
+
+            <div id="cap-s3" style="position:absolute;inset:0;padding:12px;opacity:0;">
+              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">03 / ONE-CLICK RECONCILIATION</div>
+              <div style="background:#141416;border-radius:5px;padding:8px;display:flex;gap:6px;height:calc(100% - 22px);">
+                <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                  <div style="font-size:5px;color:#52525B;margin-bottom:1px;">INVOICES</div>
+                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#10B981;">Invoice #4421 ✓</div>
+                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#10B981;">Stripe Oct 3 ✓</div>
+                  <div style="background:rgba(200,180,154,0.08);border:1px solid rgba(200,180,154,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#C8B49A;">Transfer?</div>
+                </div>
+                <div style="display:flex;align-items:center;font-size:14px;color:#4EC9E0;">⇄</div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                  <div style="font-size:5px;color:#52525B;margin-bottom:1px;">BANK</div>
+                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#10B981;">Bank line 12 ✓</div>
+                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:3px;padding:2px 4px;font-size:6px;color:#10B981;">Bank line 7 ✓</div>
+                  <div style="background:#141418;border:1px solid #27272A;border-radius:3px;padding:2px 4px;font-size:6px;color:#52525B;">Review</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="cap-s4" style="position:absolute;inset:0;padding:12px;opacity:0;">
+              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">04 / AUTOMATED REPORTS</div>
+              <div style="background:#141416;border-radius:5px;padding:8px;height:calc(100% - 22px);display:flex;flex-direction:column;gap:4px;">
+                <div style="display:flex;justify-content:space-between;font-size:6px;color:#52525B;"><span>P&amp;L Q4</span><span style="color:#10B981;">Ready ✓</span></div>
+                <div style="display:flex;gap:3px;flex:1;align-items:flex-end;">
+                  <div style="flex:1;background:rgba(78,201,224,0.25);border-radius:2px 2px 0 0;height:55%;"></div>
+                  <div style="flex:1;background:rgba(78,201,224,0.4);border-radius:2px 2px 0 0;height:80%;"></div>
+                  <div style="flex:1;background:rgba(78,201,224,0.35);border-radius:2px 2px 0 0;height:65%;"></div>
+                  <div style="flex:1;background:rgba(78,201,224,0.55);border-radius:2px 2px 0 0;height:100%;"></div>
+                  <div style="flex:1;background:rgba(200,180,154,0.35);border-radius:2px 2px 0 0;height:72%;"></div>
+                  <div style="flex:1;background:rgba(200,180,154,0.5);border-radius:2px 2px 0 0;height:88%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="cap-s5" style="position:absolute;inset:0;padding:12px;opacity:0;">
+              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">05 / ANOMALY DETECTION</div>
+              <div style="background:#141416;border-radius:5px;padding:8px;height:calc(100% - 22px);display:flex;flex-direction:column;gap:3px;">
+                <div style="background:#141418;border-radius:3px;padding:2px 5px;font-size:6px;color:#52525B;">AWS $312.50 — Normal</div>
+                <div style="background:#141418;border-radius:3px;padding:2px 5px;font-size:6px;color:#52525B;">Stripe $8,400 — Normal</div>
+                <div style="background:rgba(234,67,53,0.1);border:1px solid rgba(234,67,53,0.3);border-radius:3px;padding:2px 5px;font-size:6px;color:#F87171;font-weight:700;">⚠ Duplicate: AWS $1,200</div>
+                <div style="background:#141418;border-radius:3px;padding:2px 5px;font-size:6px;color:#52525B;">Office Depot $143 — Normal</div>
+                <div style="margin-top:auto;font-size:6px;color:#F87171;">1 issue flagged before close</div>
+              </div>
+            </div>
+
+            <div id="cap-s6" style="position:absolute;inset:0;padding:12px;opacity:0;">
+              <div style="font-size:7px;font-weight:700;letter-spacing:1.5px;color:#4EC9E0;margin-bottom:6px;">06 / NATURAL LANGUAGE QUERIES</div>
+              <div style="background:#141416;border-radius:5px;padding:8px;height:calc(100% - 22px);display:flex;flex-direction:column;justify-content:flex-end;gap:5px;">
+                <div style="background:rgba(78,201,224,0.08);border:1px solid rgba(78,201,224,0.15);border-radius:6px 6px 2px 6px;padding:4px 8px;font-size:7px;color:#A8A09A;align-self:flex-end;">"Travel spend Acme last quarter?"</div>
+                <div style="background:#1C1C1E;border:1px solid #2A2A2C;border-radius:2px 6px 6px 6px;padding:4px 8px;font-size:7px;color:#FAFAFA;">$4,820 across 11 transactions.<br>Flights $3,100 · Hotels $1,720.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Base -->
+        <div style="width:100%;height:18px;background:linear-gradient(180deg,#2C2C2E,#1C1C1E);border-radius:0 0 10px 10px;border:1.5px solid #3A3A3C;border-top:none;box-shadow:0 12px 40px rgba(0,0,0,0.7);"></div>
+
+      </div>
+    </div>
+
+    <!-- Text zone: bottom 42% -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:42%;display:flex;align-items:center;justify-content:center;padding:0 24px;">
+
+      <div id="ct-s0" style="position:absolute;text-align:center;opacity:1;">
+        <p class="section-label">Capabilities</p>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,4vw,48px);font-weight:600;letter-spacing:-1.5px;line-height:1.1;">6 tasks your accountants were<br><span style="background:linear-gradient(135deg,#4EC9E0,#C8B49A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">definitely not hired to do.</span></h2>
+      </div>
+
+      <div id="ct-s1" style="position:absolute;text-align:center;opacity:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">01</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Instant Document Processing</h3>
+        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Drop a bank statement, invoice, or receipt. Aqqrue reads every line and files it in seconds. No manual keying, no missed fields.</p>
+      </div>
+
+      <div id="ct-s2" style="position:absolute;text-align:center;opacity:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">02</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Smart Auto-Categorization</h3>
+        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Learns each client's patterns, gets sharper every month. Never fatigued. Never inconsistent. Never complains about it either.</p>
+      </div>
+
+      <div id="ct-s3" style="position:absolute;text-align:center;opacity:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">03</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">One-Click Reconciliation</h3>
+        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Bank entries matched to invoices automatically. Mismatches flagged. Month-end close goes from days to under twenty minutes.</p>
+      </div>
+
+      <div id="ct-s4" style="position:absolute;text-align:center;opacity:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">04</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Automated Report Generation</h3>
+        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">P&amp;L, balance sheets, custom client reports on demand. In your format. Done before Friday. Without you doing it.</p>
+      </div>
+
+      <div id="ct-s5" style="position:absolute;text-align:center;opacity:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">05</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Anomaly Detection</h3>
+        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Duplicates, odd vendors, unusual amounts — flagged before they become your problem. A quiet safety net that never sleeps.</p>
+      </div>
+
+      <div id="ct-s6" style="position:absolute;text-align:center;opacity:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#4EC9E0;text-transform:uppercase;margin-bottom:10px;">06</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,36px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;">Natural Language Queries</h3>
+        <p style="font-size:15px;color:#A8A09A;max-width:480px;line-height:1.65;margin:0 auto;">Ask your books a question in plain English. Before a client call. In thirty seconds. Not after thirty minutes of filtering.</p>
+      </div>
+
+    </div>
+
+    <!-- Progress dots -->
+    <div id="cap-dots" style="position:absolute;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;opacity:0;">
+      <div class="cap-dot active-dot" data-n="0"></div>
+      <div class="cap-dot" data-n="1"></div>
+      <div class="cap-dot" data-n="2"></div>
+      <div class="cap-dot" data-n="3"></div>
+      <div class="cap-dot" data-n="4"></div>
+      <div class="cap-dot" data-n="5"></div>
+      <div class="cap-dot" data-n="6"></div>
     </div>
 
   </div>
@@ -1470,10 +1649,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   // Scene 3
   tl.fromTo('#sr-t3', { opacity:0, y:40 }, { opacity:1, y:0, duration:1 }, 5.2);
 
-  // All out
-  tl.to(['#sr-t3','#sr-glow'], { opacity:0, duration:0.8 }, 7.4);
-  tl.to('#sr-dash-wrap', { translateY:'100%', duration:0.8 }, 7.4);
-  tl.to('#sr-text-wrap', { y:'0', duration:0.6 }, 7.4);
 })();
 
 // ===== CAPABILITY SECTION 3D MESH BACKGROUND =====
@@ -1563,6 +1738,56 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   window.addEventListener('resize', resize);
   resize();
   draw();
+})();
+
+// ===== GSAP: CAPABILITIES LAPTOP SCROLL STAGE =====
+(function(){
+  if(typeof gsap === 'undefined') return;
+  const stage = document.getElementById('cap-stage');
+  if(!stage) return;
+
+  const screens = ['cap-s0','cap-s1','cap-s2','cap-s3','cap-s4','cap-s5','cap-s6'];
+  const texts   = ['ct-s0','ct-s1','ct-s2','ct-s3','ct-s4','ct-s5','ct-s6'];
+  const dots    = document.querySelectorAll('.cap-dot');
+
+  function setScene(n) {
+    screens.forEach((id,i) => gsap.set('#'+id, { opacity: i===n ? 1 : 0 }));
+    texts.forEach((id,i)   => gsap.set('#'+id, { opacity: i===n ? 1 : 0 }));
+    dots.forEach((d,i) => d.classList.toggle('active-dot', i===n));
+  }
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#cap-stage',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1.0,
+      onUpdate: self => {
+        const p = self.progress;
+        // Determine active scene (0-6)
+        const scene = p < 0.12 ? 0
+          : p < 0.24 ? 1
+          : p < 0.36 ? 2
+          : p < 0.50 ? 3
+          : p < 0.63 ? 4
+          : p < 0.76 ? 5
+          : 6;
+        setScene(scene);
+      }
+    }
+  });
+
+  // Mac slides in from below
+  tl.to('#mac-body', { y: 0, duration:1.0, ease:'power2.out' }, 0);
+  // Glow on
+  tl.to('#cg-glow', { opacity:1, duration:0.8 }, 0.3);
+  // Lid opens
+  tl.to('#mac-lid', { rotateX: -16, duration:1.5, ease:'power2.out' }, 0.5);
+  // Dots appear
+  tl.to('#cap-dots', { opacity:1, duration:0.5 }, 1.2);
+
+  // End: laptop fades out
+  tl.to(['#mac-body','#cap-dots','#cg-glow'], { opacity:0, duration:0.5 }, 9.0);
 })();
 
 // ===== GSAP: CAPABILITIES 3D ENTRANCE =====

@@ -725,6 +725,8 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   .contact-card { padding: 32px 24px; }
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
 
@@ -788,11 +790,11 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="hero-inner">
     <div class="hero-badge">AI Co-Pilot for Accountants</div>
     <h1 class="hero-h1">
-      Finally, accounting software<br>
-      <span class="grad-text">that does the accounting.</span>
+      The only AI toolkit<br>
+      <span class="grad-text">built for accountants.</span>
     </h1>
     <p class="hero-sub">
-      Your team spent seven years studying tax law and financial modeling. They spend 70% of their week copy-pasting. Aqqrue handles the copy-paste. They keep the expertise.
+      Accountants spend 70% of their week on work that requires no accounting degree. Aqqrue handles all of it, so the people you are paying to think can actually think.
     </p>
     <div class="hero-ctas">
       <a href="#contact" class="btn-grad">Talk to our team</a>
@@ -843,51 +845,62 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   </div>
 </div>
 
-<!-- 3D LAPTOP INTRO -->
-<div id="laptop-intro" style="padding:80px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;">
-  <div style="perspective:1400px;perspective-origin:50% 40%;width:100%;max-width:700px;padding:0 24px;">
-    <div id="laptop-3d" style="transform-style:preserve-3d;position:relative;">
-      <!-- Screen lid -->
-      <div id="laptop-lid" style="
-        width:100%;padding-bottom:62%;background:#1A1A1F;border-radius:12px 12px 0 0;
-        border:2px solid #2A2A30;position:relative;
-        transform:rotateX(-88deg);transform-origin:bottom center;
-        transform-style:preserve-3d;
-        transition:transform 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
-        box-shadow:0 -8px 40px rgba(78,201,224,0.15);
-      ">
-        <!-- Screen content -->
-        <div style="position:absolute;inset:8px;border-radius:6px;background:#09090B;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:14px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-            <span style="font-size:9px;font-weight:700;color:#4EC9E0;letter-spacing:1px;text-transform:uppercase;">Aqqrue / October</span>
-            <span style="font-size:9px;color:#10B981;font-weight:700;">44 / 47 Auto-filed</span>
+<!-- APPLE-STYLE SCROLL REVEAL STAGE -->
+<div id="scroll-stage" style="height:380vh;position:relative;">
+  <div style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--bg);">
+
+    <!-- Ambient glow -->
+    <div id="sr-glow" style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(78,201,224,0.06) 0%,transparent 70%);pointer-events:none;opacity:0;"></div>
+
+    <!-- Scene 1 -->
+    <div id="sr-t1" style="position:absolute;text-align:center;padding:0 24px;will-change:opacity,transform;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:20px;">Month-end close</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7vw,86px);font-weight:600;letter-spacing:-3px;line-height:1.05;max-width:800px;">Open your laptop.<br><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">It's already done.</span></h2>
+    </div>
+
+    <!-- Scene 2 -->
+    <div id="sr-t2" style="position:absolute;text-align:center;padding:0 24px;opacity:0;will-change:opacity,transform;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:20px;">Automated</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7vw,86px);font-weight:600;letter-spacing:-3px;line-height:1.05;max-width:800px;"><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">44 of 47</span> transactions<br>handled. Without you.</h2>
+    </div>
+
+    <!-- Scene 3 -->
+    <div id="sr-t3" style="position:absolute;text-align:center;padding:0 24px;opacity:0;will-change:opacity,transform;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:20px;">Your actual job</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7vw,86px);font-weight:600;letter-spacing:-3px;line-height:1.05;max-width:800px;">3 things need<br><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">your judgment.</span></h2>
+      <p style="font-size:18px;color:var(--text-sec);margin-top:24px;line-height:1.7;max-width:440px;margin-left:auto;margin-right:auto;">That is what your accounting degree is for. Not the other 44.</p>
+    </div>
+
+    <!-- 3D Dashboard -->
+    <div style="position:absolute;bottom:6%;left:50%;transform:translateX(-50%);">
+      <div id="sr-dash" style="width:min(620px,90vw);opacity:0;will-change:opacity,transform;transform:perspective(1200px) rotateX(32deg) scale(0.82);transform-origin:bottom center;">
+        <div style="background:#18181B;border:1px solid #2A2A30;border-radius:16px;overflow:hidden;box-shadow:0 48px 120px rgba(0,0,0,0.85),0 0 80px rgba(78,201,224,0.08);">
+          <div style="background:#141418;border-bottom:1px solid #27272A;padding:13px 18px;display:flex;align-items:center;gap:8px;">
+            <div style="width:11px;height:11px;border-radius:50%;background:#FF5F57;"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#FFBD2E;"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#28CA41;"></div>
+            <span style="font-size:11px;color:#52525B;margin-left:10px;font-family:monospace;">Aqqrue / October Reconciliation</span>
+            <span style="margin-left:auto;font-size:11px;color:#10B981;font-weight:700;">93.6% auto-filed</span>
           </div>
-          <div style="height:4px;background:#27272A;border-radius:2px;"><div style="height:100%;width:93.6%;background:linear-gradient(90deg,#4EC9E0,#C8B49A);border-radius:2px;"></div></div>
-          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;background:#18181B;border-radius:5px;padding:6px 10px;">
-              <span style="font-size:8px;color:#A1A1AA;">Stripe payout Oct 3</span>
-              <span style="font-size:8px;color:#34D399;font-weight:700;">+$8,400</span>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:10px;">
+            <div style="height:5px;background:#27272A;border-radius:3px;margin-bottom:4px;"><div style="height:100%;width:93.6%;background:linear-gradient(90deg,#4EC9E0,#C8B49A);border-radius:3px;"></div></div>
+            <div style="background:#141418;border-radius:10px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:13px;color:#FAFAFA;font-weight:500;">Stripe payout — Oct 3</div><div style="font-size:11px;color:#52525B;margin-top:3px;">Revenue / Client Services</div></div>
+              <div style="text-align:right;"><div style="font-size:13px;color:#34D399;font-weight:700;">+$8,400.00</div><span style="font-size:9px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 8px;border-radius:4px;margin-top:4px;display:inline-block;">Auto-filed</span></div>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;background:#18181B;border-radius:5px;padding:6px 10px;">
-              <span style="font-size:8px;color:#A1A1AA;">AWS Invoice #4421</span>
-              <span style="font-size:8px;color:#FAFAFA;font-weight:700;">-$312</span>
+            <div style="background:#141418;border-radius:10px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:13px;color:#FAFAFA;font-weight:500;">AWS Invoice #4421</div><div style="font-size:11px;color:#52525B;margin-top:3px;">Operating Expenses / Cloud</div></div>
+              <div style="text-align:right;"><div style="font-size:13px;color:#FAFAFA;font-weight:700;">-$312.50</div><span style="font-size:9px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 8px;border-radius:4px;margin-top:4px;display:inline-block;">Auto-filed</span></div>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(78,201,224,0.06);border:1px solid rgba(78,201,224,0.15);border-radius:5px;padding:6px 10px;">
-              <span style="font-size:8px;color:#4EC9E0;">Transfer — needs review</span>
-              <span style="font-size:8px;color:#C8B49A;font-weight:700;">-$5,000</span>
+            <div style="background:rgba(78,201,224,0.05);border:1px solid rgba(78,201,224,0.18);border-radius:10px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:13px;color:#4EC9E0;font-weight:500;">Transfer — Acct ending 4422</div><div style="font-size:11px;color:#52525B;margin-top:3px;">Needs your review</div></div>
+              <div style="text-align:right;"><div style="font-size:13px;color:#C8B49A;font-weight:700;">-$5,000.00</div><span style="font-size:9px;font-weight:700;background:rgba(200,180,154,0.12);color:#C8B49A;border:1px solid rgba(200,180,154,0.25);padding:2px 8px;border-radius:4px;margin-top:4px;display:inline-block;">Review</span></div>
             </div>
           </div>
         </div>
-        <!-- Camera dot -->
-        <div style="position:absolute;top:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#27272A;"></div>
       </div>
-      <!-- Base -->
-      <div style="
-        width:100%;height:18px;background:linear-gradient(180deg,#222228,#1A1A1F);
-        border-radius:0 0 8px 8px;border:2px solid #2A2A30;border-top:none;
-        box-shadow:0 8px 32px rgba(0,0,0,0.6);
-      "></div>
     </div>
+
   </div>
 </div>
 
@@ -1366,6 +1379,54 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 </footer>
 
 <script>
+// ===== APPLE-STYLE SCROLL REVEAL (GSAP ScrollTrigger) =====
+(function(){
+  if(typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const stage = document.getElementById('scroll-stage');
+  if(!stage) return;
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#scroll-stage',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1.4,
+    }
+  });
+
+  // Glow fades in
+  tl.to('#sr-glow', { opacity:1, duration:1 }, 0);
+
+  // Scene 1: fade in, then out
+  tl.fromTo('#sr-t1', { opacity:0, y:60 }, { opacity:1, y:0, duration:1.2, ease:'power2.out' }, 0.2);
+  tl.to('#sr-t1', { opacity:0, y:-60, duration:0.8, ease:'power2.in' }, 2.0);
+
+  // Dashboard rises and flattens (from tilted at bottom to front-and-center)
+  tl.to('#sr-dash', { opacity:1, duration:1 }, 1.6);
+  tl.to('#sr-dash', {
+    transform: 'perspective(1200px) rotateX(0deg) scale(1)',
+    duration:2.4,
+    ease:'power2.out'
+  }, 1.6);
+
+  // Scene 2
+  tl.fromTo('#sr-t2', { opacity:0, y:60 }, { opacity:1, y:0, duration:1.2, ease:'power2.out' }, 2.8);
+  tl.to('#sr-t2', { opacity:0, y:-60, duration:0.8, ease:'power2.in' }, 4.5);
+
+  // Dashboard pushes down as scene 3 comes in
+  tl.to('#sr-dash', { y:80, opacity:0.3, duration:1 }, 4.8);
+
+  // Scene 3
+  tl.fromTo('#sr-t3', { opacity:0, y:60 }, { opacity:1, y:0, duration:1.2, ease:'power2.out' }, 5.2);
+
+  // Everything fades out
+  tl.to(['#sr-t3','#sr-glow'], { opacity:0, duration:0.8 }, 7.5);
+  tl.to('#sr-dash', { opacity:0, duration:0.6 }, 7.5);
+
+})();
+
 // ===== HERO CANVAS PARTICLES =====
 (function(){
   const canvas = document.getElementById('hero-canvas');

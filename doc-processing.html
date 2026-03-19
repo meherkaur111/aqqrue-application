@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Instant Document Processing - Aqqrue</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#09090B;--surface:#18181B;--border:#27272A;
+  --blue:#4EC9E0;--yellow:#C8B49A;
+  --grad:linear-gradient(135deg,#4EC9E0,#C8B49A);
+  --text:#FAFAFA;--text-sec:#A8A09A;--text-muted:#52525B;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(9,9,11,0.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-logo{font-size:18px;font-weight:800;letter-spacing:-0.5px;}
+.nav-logo .logo-accent{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--text-muted);transition:color 0.2s;}
+.back-btn:hover{color:var(--text);}
+
+/* HERO */
+.feat-hero{padding:140px 24px 80px;text-align:center;position:relative;overflow:hidden;}
+.feat-hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(78,201,224,0.06) 0%,transparent 70%);pointer-events:none;}
+.feat-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:20px;}
+.feat-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6vw,72px);font-weight:600;letter-spacing:-2px;line-height:1.08;margin-bottom:24px;}
+.feat-sub{font-size:18px;color:var(--text-sec);max-width:560px;margin:0 auto 40px;line-height:1.75;}
+.btn-grad{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:8px;background:var(--grad);color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:box-shadow 0.25s,transform 0.2s;}
+.btn-grad:hover{box-shadow:0 0 28px rgba(78,201,224,0.35);transform:translateY(-1px);}
+
+/* SECTIONS */
+.container{max-width:960px;margin:0 auto;padding:0 24px;}
+section{padding:80px 0;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;}
+.section-heading{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:600;letter-spacing:-1px;line-height:1.15;margin-bottom:16px;}
+.section-sub{color:var(--text-sec);font-size:16px;line-height:1.75;max-width:600px;margin-bottom:48px;}
+
+/* HOW CARDS */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:40px;}
+.how-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px 28px;}
+.how-num{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.how-title{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;}
+.how-desc{font-size:14px;color:var(--text-sec);line-height:1.75;}
+
+/* WHAT IT HANDLES */
+.handles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:32px;}
+.handle-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;display:flex;align-items:flex-start;gap:12px;}
+.handle-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px;}
+.handle-text{font-size:14px;color:var(--text-sec);line-height:1.6;}
+.handle-text strong{color:var(--text);font-weight:600;display:block;margin-bottom:2px;}
+
+/* QUOTE */
+.big-quote{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px 48px;margin:48px 0;position:relative;}
+.big-quote::before{content:'"';font-size:80px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--blue);opacity:0.25;position:absolute;top:16px;left:32px;line-height:1;}
+.big-quote p{font-size:18px;line-height:1.75;color:var(--text-sec);position:relative;z-index:1;}
+.big-quote p strong{color:var(--text);}
+
+/* CTA STRIP */
+.cta-strip{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:56px 48px;text-align:center;margin-top:40px;}
+.cta-strip h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3.5vw,40px);font-weight:600;letter-spacing:-1px;margin-bottom:14px;}
+.cta-strip p{color:var(--text-sec);font-size:16px;margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;}
+.footer-note{font-size:13px;color:var(--text-muted);}
+.back-link{font-size:14px;font-weight:600;color:var(--blue);}
+@media(max-width:640px){
+  nav{padding:0 20px;}
+  .feat-hero{padding:120px 20px 60px;}
+  .big-quote{padding:28px 24px;}
+  footer{flex-direction:column;gap:16px;padding:24px 20px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="aqqrue-meher.html" class="nav-logo">Aq<span class="logo-accent">qrue</span></a>
+  <a href="aqqrue-meher.html" class="back-btn">&#8592; Back to Aqqrue</a>
+</nav>
+
+<div class="feat-hero">
+  <div class="feat-label">Capability 01</div>
+  <h1 class="feat-h1">Instant Document<br><span class="grad-text">Processing</span></h1>
+  <p class="feat-sub">Your team has spent a combined 4,000 hours reading things that could read themselves. That ends here.</p>
+  <a href="aqqrue-meher.html#contact" class="btn-grad">Book a demo</a>
+</div>
+
+<section>
+  <div class="container">
+    <p class="section-label">The Problem</p>
+    <h2 class="section-heading">The average invoice takes 4 minutes to process manually. Aqqrue takes 4 seconds.</h2>
+    <p class="section-sub">Across a 50-client firm, that is roughly 8 hours every week that goes into reading documents and typing what they say into another system. We are not judging. We are just saying there is a better use for those 8 hours.</p>
+
+    <div class="big-quote">
+      <p>A receipt is just a structured piece of information. A bank statement is a structured piece of information. An invoice is a structured piece of information. <strong>None of them need a human being to read them first.</strong></p>
+    </div>
+
+    <p class="section-label">What it handles</p>
+    <h2 class="section-heading">Every document your firm touches. Without the touching.</h2>
+    <div class="handles-grid">
+      <div class="handle-item"><div class="handle-dot"></div><div class="handle-text"><strong>Bank Statements</strong>All major banks. PDF or CSV. Multi-page. Even the weird formatting ones.</div></div>
+      <div class="handle-item"><div class="handle-dot"></div><div class="handle-text"><strong>Invoices</strong>Vendor invoices in any layout. Line items, totals, tax breakdowns, PO numbers extracted automatically.</div></div>
+      <div class="handle-item"><div class="handle-dot"></div><div class="handle-text"><strong>Receipts</strong>Photos of paper receipts. Scanned PDFs. Even slightly blurry ones your clients send at 11pm.</div></div>
+      <div class="handle-item"><div class="handle-dot"></div><div class="handle-text"><strong>Payroll Reports</strong>Payslip exports from Gusto, ADP, and Paychex. Hours, rates, deductions, employer contributions.</div></div>
+      <div class="handle-item"><div class="handle-dot"></div><div class="handle-text"><strong>Credit Card Statements</strong>Every transaction line, merchant name, category hint, and running balance. Across all cards.</div></div>
+      <div class="handle-item"><div class="handle-dot"></div><div class="handle-text"><strong>Contracts with Payment Terms</strong>Reads net-30, net-60 clauses and maps them to expected cash flow automatically.</div></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <p class="section-label">How It Works</p>
+    <h2 class="section-heading">Drop it in. Walk away. Come back to clean data.</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">Step 01</div>
+        <div class="how-title">Drop the document</div>
+        <div class="how-desc">Email it, upload it, or let Aqqrue pull it directly from your client portal, Google Drive, or Dropbox. Any format. Any layout.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">Step 02</div>
+        <div class="how-title">AI reads every line</div>
+        <div class="how-desc">Optical character recognition combined with document understanding models. It does not just extract text, it understands context. A $500 figure means different things in different positions on a document.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">Step 03</div>
+        <div class="how-title">Data lands in your books</div>
+        <div class="how-desc">Every field populates directly into QuickBooks or Xero. Vendor, amount, date, category suggestion, line items. You review exceptions. That is your only job here.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <p class="section-label">Accuracy</p>
+    <h2 class="section-heading">What happens when it is not sure?</h2>
+    <p class="section-sub">We designed Aqqrue around a simple principle: a wrong automatic entry is worse than a flagged manual one. When confidence is below threshold, the document is not silently filed. It is surfaced to you with the extracted data pre-filled and the specific uncertainty highlighted.</p>
+    <p class="section-sub">The result: you spend time reviewing edge cases, not reading every document. The ratio, for a typical firm, is about 94 documents handled automatically for every 6 that need your eyes.</p>
+
+    <div class="cta-strip">
+      <h2>Ready to stop reading things that can read themselves?</h2>
+      <p>Book a 20-minute demo and bring your messiest client folder. We like a challenge.</p>
+      <a href="aqqrue-meher.html#contact" class="btn-grad">Book the demo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-note">Aqqrue &mdash; AI Co-Pilot for Accountants</span>
+  <a href="aqqrue-meher.html" class="back-link">&#8592; Back to main page</a>
+</footer>
+
+</body>
+</html>

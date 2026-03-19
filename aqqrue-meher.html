@@ -264,7 +264,21 @@ section { padding: 100px 24px; }
 }
 .marquee-track:hover { animation-play-state: paused; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.marquee-item { font-size: 14px; font-weight: 700; color: var(--text-muted); opacity: 0.45; white-space: nowrap; }
+.marquee-item {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 14px; font-weight: 700; color: var(--text-muted); opacity: 0.55; white-space: nowrap;
+}
+.marquee-logo {
+  height: 20px; width: 20px; object-fit: contain; border-radius: 4px;
+  filter: grayscale(1) brightness(2.2); opacity: 0.7;
+}
+.cap-more {
+  display: inline-block; margin-top: 16px;
+  font-size: 13px; font-weight: 600; color: var(--blue);
+  text-decoration: none; letter-spacing: 0.2px;
+  transition: gap 0.2s, opacity 0.2s;
+}
+.cap-more:hover { opacity: 0.75; }
 
 .hero-inner { position: relative; z-index: 1; max-width: 860px; }
 
@@ -761,7 +775,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
       <span class="grad-text">built for accountants.</span>
     </h1>
     <p class="hero-sub">
-      Accountants spend 70% of their week on work that requires no accounting degree. Aqqrue handles all of it, so the people you are paying to think can actually think.
+      Somewhere between the third bank statement and the fifth copy-paste of the day, your accountants forgot they were accountants. Aqqrue remembers for them.
     </p>
     <div class="hero-ctas">
       <a href="#contact" class="btn-grad">Talk to our team</a>
@@ -790,23 +804,23 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="trusted-label">Integrates with the tools your firm already uses</div>
     <div class="marquee-wrap">
       <div class="marquee-track">
-        <span class="marquee-item">QuickBooks</span>
-        <span class="marquee-item">Xero</span>
-        <span class="marquee-item">Stripe</span>
-        <span class="marquee-item">Gusto</span>
-        <span class="marquee-item">Bill.com</span>
-        <span class="marquee-item">Plaid</span>
-        <span class="marquee-item">Dext</span>
-        <span class="marquee-item">Hubdoc</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/quickbooks.intuit.com" alt="">QuickBooks</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/xero.com" alt="">Xero</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/stripe.com" alt="">Stripe</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/gusto.com" alt="">Gusto</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/bill.com" alt="">Bill.com</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/plaid.com" alt="">Plaid</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/dext.com" alt="">Dext</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/hubdoc.com" alt="">Hubdoc</span>
         <!-- duplicate for seamless loop -->
-        <span class="marquee-item">QuickBooks</span>
-        <span class="marquee-item">Xero</span>
-        <span class="marquee-item">Stripe</span>
-        <span class="marquee-item">Gusto</span>
-        <span class="marquee-item">Bill.com</span>
-        <span class="marquee-item">Plaid</span>
-        <span class="marquee-item">Dext</span>
-        <span class="marquee-item">Hubdoc</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/quickbooks.intuit.com" alt="">QuickBooks</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/xero.com" alt="">Xero</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/stripe.com" alt="">Stripe</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/gusto.com" alt="">Gusto</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/bill.com" alt="">Bill.com</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/plaid.com" alt="">Plaid</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/dext.com" alt="">Dext</span>
+        <span class="marquee-item"><img class="marquee-logo" src="https://logo.clearbit.com/hubdoc.com" alt="">Hubdoc</span>
       </div>
     </div>
   </div>
@@ -816,8 +830,8 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <section id="capabilities">
   <div class="container">
     <p class="section-label fade-up">Capabilities</p>
-    <h2 class="section-heading fade-up">Six things your team will<br>never have to do again.</h2>
-    <p class="section-sub fade-up">Aqqrue plugs into your existing workflow and takes over every task that a skilled accountant should never have been doing in the first place.</p>
+    <h2 class="section-heading fade-up">Six things your team is doing<br>instead of actual accounting.</h2>
+    <p class="section-sub fade-up">Aqqrue connects to your existing stack and quietly handles every task that makes your senior accountants Google "career change."</p>
 
     <div class="cap-grid">
       <div class="cap-card fade-up">
@@ -834,6 +848,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         </div>
         <div class="cap-title">Instant Document Processing</div>
         <div class="cap-desc">Drop a bank statement, invoice, or receipt. Aqqrue reads every line and files it in seconds. No manual keying, no missed fields, no copy-paste.</div>
+        <a href="doc-processing.html" class="cap-more">How it works &rarr;</a>
       </div>
       <div class="cap-card fade-up">
         <div class="cap-visual">
@@ -849,6 +864,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         </div>
         <div class="cap-title">Smart Auto-Categorization</div>
         <div class="cap-desc">The AI learns each client's transaction patterns and categorizes correctly from the start. It gets sharper every month, never fatigued, never inconsistent.</div>
+        <a href="auto-categorization.html" class="cap-more">How it works &rarr;</a>
       </div>
       <div class="cap-card fade-up">
         <div class="cap-visual">
@@ -868,6 +884,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         </div>
         <div class="cap-title">One-Click Reconciliation</div>
         <div class="cap-desc">Bank entries matched to invoices automatically. Mismatches flagged for your review. Month-end close goes from days to under twenty minutes.</div>
+        <a href="reconciliation.html" class="cap-more">How it works &rarr;</a>
       </div>
       <div class="cap-card fade-up">
         <div class="cap-visual">
@@ -883,6 +900,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         </div>
         <div class="cap-title">Automated Report Generation</div>
         <div class="cap-desc">Balance sheets, P&amp;L statements, and custom client reports generated on demand. Your firm's format, your client's numbers, zero manual assembly.</div>
+        <a href="report-generation.html" class="cap-more">How it works &rarr;</a>
       </div>
       <div class="cap-card fade-up">
         <div class="cap-visual">
@@ -896,6 +914,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         </div>
         <div class="cap-title">Anomaly Detection</div>
         <div class="cap-desc">Duplicates, misclassifications, and unusual entries are flagged before they become problems. A quiet safety net running under your workflow.</div>
+        <a href="anomaly-detection.html" class="cap-more">How it works &rarr;</a>
       </div>
       <div class="cap-card fade-up">
         <div class="cap-visual" style="flex-direction:column;align-items:stretch;gap:0;">
@@ -906,6 +925,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         </div>
         <div class="cap-title">Natural Language Queries</div>
         <div class="cap-desc">Ask your books a question in plain English. An answer in seconds, not after thirty minutes of filtering spreadsheets.</div>
+        <a href="natural-language.html" class="cap-more">How it works &rarr;</a>
       </div>
     </div>
   </div>
@@ -917,9 +937,9 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="demo-split">
       <div class="demo-copy">
         <p class="section-label fade-up">Product</p>
-        <h2 class="section-heading fade-up">Your books, running themselves.</h2>
-        <p class="fade-up">Every transaction that arrives gets read, categorized, matched, and filed. You see a clean dashboard. Three items need your judgment. Everything else is already done before you open your laptop.</p>
-        <p class="fade-up" style="font-size:15px;color:var(--text-muted);">This is not a productivity tool. This is what accounting software was always supposed to be.</p>
+        <h2 class="section-heading fade-up">Your books, running themselves. No, seriously.</h2>
+        <p class="fade-up">Every transaction that arrives gets read, categorized, matched, and filed. You open your laptop and see a clean dashboard. Three items need your judgment. Everything else is already done. Yes, really.</p>
+        <p class="fade-up" style="font-size:15px;color:var(--text-muted);">This is not a productivity tool. This is what accounting software was always supposed to be before spreadsheets convinced everyone it was fine.</p>
         <a href="#contact" class="btn-grad fade-up" style="margin-top:8px;width:fit-content;">Talk to our team</a>
       </div>
       <div class="fade-up">
@@ -993,8 +1013,8 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <section id="how">
   <div class="container">
     <p class="section-label fade-up">How It Works</p>
-    <h2 class="section-heading fade-up">Three steps. Zero grunt work.</h2>
-    <p class="section-sub fade-up">From first connection to a fully automated close, Aqqrue is live in under a week.</p>
+    <h2 class="section-heading fade-up">Three steps. We tried two but that felt like showing off.</h2>
+    <p class="section-sub fade-up">From first connection to a fully automated close, Aqqrue is live in under a week. Your team will be suspicious of how easy it was.</p>
 
     <div class="steps-row" id="steps-row">
       <div class="step-line" id="step-line"></div>
@@ -1021,8 +1041,8 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <section id="impact">
   <div class="container">
     <p class="section-label fade-up">Impact</p>
-    <h2 class="section-heading fade-up">Numbers that don't need a footnote.</h2>
-    <p class="section-sub fade-up">Not projections, not estimates. What real firms reported after their first sixty days on Aqqrue.</p>
+    <h2 class="section-heading fade-up">Numbers so good they feel made up. They are not.</h2>
+    <p class="section-sub fade-up">Not projections, not VC slide estimates. What real firms reported after their first sixty days on Aqqrue.</p>
 
     <div class="impact-row">
       <div class="impact-card fade-up">
@@ -1064,7 +1084,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <section id="testimonials">
   <div class="container">
     <p class="section-label fade-up">Customers</p>
-    <h2 class="section-heading fade-up">Accountants who got their evenings back.</h2>
+    <h2 class="section-heading fade-up">Things accountants said when they stopped doing fake accounting work.</h2>
 
     <div class="testi-grid">
       <div class="testi-card fade-up">
@@ -1100,8 +1120,8 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="container">
     <div class="contact-wrap">
       <p class="section-label fade-up" style="text-align:center;">Get Started</p>
-      <h2 class="section-heading fade-up" style="text-align:center;">See it with your own books.</h2>
-      <p class="section-sub fade-up" style="margin:0 auto;text-align:center;">Tell us about your firm. We will be in touch within 24 hours. No pitch, no pressure. Just your own data, running on Aqqrue.</p>
+      <h2 class="section-heading fade-up" style="text-align:center;">Let us ruin spreadsheets for you. Forever.</h2>
+      <p class="section-sub fade-up" style="margin:0 auto;text-align:center;">Twenty minutes. That is all the demo takes. Shorter than your current month-end close, and more useful than the last three status meetings combined.</p>
 
       <div class="contact-card fade-up" id="contact-card">
         <div id="contact-form-wrap">
@@ -1115,20 +1135,10 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
               <input type="text" id="f-company" placeholder="Sharma &amp; Associates" />
             </div>
           </div>
-          <div class="form-row-2">
-            <div class="form-row">
-              <label for="f-linkedin">LinkedIn Profile</label>
-              <input type="url" id="f-linkedin" placeholder="linkedin.com/in/yourname" />
-            </div>
-            <div class="form-row">
-              <label for="f-website">Company Website</label>
-              <input type="url" id="f-website" placeholder="yourfirm.com" />
-            </div>
-          </div>
           <div class="form-row">
-            <label for="f-size">Active clients per month</label>
+            <label for="f-size">How many clients do you manage?</label>
             <select id="f-size">
-              <option value="" disabled selected>How many clients do you manage?</option>
+              <option value="" disabled selected>Pick a range</option>
               <option>1 - 10 clients</option>
               <option>11 - 30 clients</option>
               <option>31 - 75 clients</option>
@@ -1136,12 +1146,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
               <option>150+ clients</option>
             </select>
           </div>
-          <button class="form-submit" onclick="submitForm()">Book a demo &rarr;</button>
+          <button class="form-submit" onclick="submitForm()">I'm in. Show me what this does &rarr;</button>
         </div>
         <div class="form-success" id="form-success">
           <div class="success-tick">&#10003;</div>
           <h3>You're on the list.</h3>
-          <p>Expect a message from the Aqqrue team within 24 hours.<br>Go close some books. You've earned it.</p>
+          <p>Expect a message from the Aqqrue team within 24 hours.<br>Go close some books. For the last time the hard way.</p>
         </div>
       </div>
     </div>

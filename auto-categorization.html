@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Auto-Categorization - Aqqrue</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#09090B;--surface:#18181B;--border:#27272A;--blue:#4EC9E0;--yellow:#C8B49A;--grad:linear-gradient(135deg,#4EC9E0,#C8B49A);--text:#FAFAFA;--text-sec:#A8A09A;--text-muted:#52525B;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(9,9,11,0.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-logo{font-size:18px;font-weight:800;letter-spacing:-0.5px;}
+.nav-logo .logo-accent{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.back-btn{font-size:14px;font-weight:500;color:var(--text-muted);transition:color 0.2s;}
+.back-btn:hover{color:var(--text);}
+.feat-hero{padding:140px 24px 80px;text-align:center;position:relative;overflow:hidden;}
+.feat-hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(78,201,224,0.06) 0%,transparent 70%);pointer-events:none;}
+.feat-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:20px;}
+.feat-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6vw,72px);font-weight:600;letter-spacing:-2px;line-height:1.08;margin-bottom:24px;}
+.feat-sub{font-size:18px;color:var(--text-sec);max-width:560px;margin:0 auto 40px;line-height:1.75;}
+.btn-grad{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:8px;background:var(--grad);color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:box-shadow 0.25s,transform 0.2s;}
+.btn-grad:hover{box-shadow:0 0 28px rgba(78,201,224,0.35);transform:translateY(-1px);}
+.container{max-width:960px;margin:0 auto;padding:0 24px;}
+section{padding:80px 0;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;}
+.section-heading{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:600;letter-spacing:-1px;line-height:1.15;margin-bottom:16px;}
+.section-sub{color:var(--text-sec);font-size:16px;line-height:1.75;max-width:600px;margin-bottom:32px;}
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:40px;}
+.how-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px 28px;}
+.how-num{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.how-title{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;}
+.how-desc{font-size:14px;color:var(--text-sec);line-height:1.75;}
+.big-quote{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px 48px;margin:48px 0;position:relative;}
+.big-quote::before{content:'"';font-size:80px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--blue);opacity:0.25;position:absolute;top:16px;left:32px;line-height:1;}
+.big-quote p{font-size:18px;line-height:1.75;color:var(--text-sec);position:relative;z-index:1;}
+.big-quote p strong{color:var(--text);}
+.example-table{width:100%;border-collapse:collapse;margin-top:24px;}
+.example-table th{text-align:left;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);padding:0 16px 12px;border-bottom:1px solid var(--border);}
+.example-table td{padding:14px 16px;border-bottom:1px solid rgba(39,39,42,0.5);font-size:14px;color:var(--text-sec);vertical-align:top;}
+.example-table td:first-child{color:var(--text);font-weight:500;}
+.cat-tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;background:rgba(78,201,224,0.1);border:1px solid rgba(78,201,224,0.2);color:var(--blue);}
+.cta-strip{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:56px 48px;text-align:center;margin-top:40px;}
+.cta-strip h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3.5vw,40px);font-weight:600;letter-spacing:-1px;margin-bottom:14px;}
+.cta-strip p{color:var(--text-sec);font-size:16px;margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto;}
+footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;}
+.footer-note{font-size:13px;color:var(--text-muted);}
+.back-link{font-size:14px;font-weight:600;color:var(--blue);}
+@media(max-width:640px){nav{padding:0 20px;}.feat-hero{padding:120px 20px 60px;}.big-quote{padding:28px 24px;}footer{flex-direction:column;gap:16px;padding:24px 20px;text-align:center;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="aqqrue-meher.html" class="nav-logo">Aq<span class="logo-accent">qrue</span></a>
+  <a href="aqqrue-meher.html" class="back-btn">&#8592; Back to Aqqrue</a>
+</nav>
+
+<div class="feat-hero">
+  <div class="feat-label">Capability 02</div>
+  <h1 class="feat-h1">Smart<br><span class="grad-text">Auto-Categorization</span></h1>
+  <p class="feat-sub">Your chart of accounts has 200 categories. Your clients have 500 transactions a month. The intersection of those two facts should not be someone's full-time job.</p>
+  <a href="aqqrue-meher.html#contact" class="btn-grad">Book a demo</a>
+</div>
+
+<section>
+  <div class="container">
+    <p class="section-label">Why categorization is hard</p>
+    <h2 class="section-heading">Same vendor. Different category. Every time it depends on context.</h2>
+    <p class="section-sub">Amazon could be Office Supplies, Software, Equipment, or Cost of Goods. It depends on what was bought. The same client might have two Amazon accounts for two entirely different purposes. A rule-based system cannot handle that. A trained AI can.</p>
+
+    <div class="big-quote">
+      <p>The reason categorization takes so long is not that it is difficult. It is that <strong>every transaction requires a small judgment call</strong>, and those judgment calls add up to hundreds of hours across a year of client work.</p>
+    </div>
+
+    <p class="section-label">Examples</p>
+    <h2 class="section-heading">How Aqqrue reads transactions other tools get wrong.</h2>
+    <table class="example-table">
+      <tr><th>Transaction</th><th>What a rule does</th><th>What Aqqrue does</th></tr>
+      <tr><td>Amazon.com - $340</td><td>Maps to "Amazon" rule, categorizes as Office Supplies</td><td>Reads merchant data, identifies electronics purchase from device names, categorizes as Equipment</td></tr>
+      <tr><td>Apple.com - $15.99/mo</td><td>Unknown merchant, flags for manual review</td><td>Recognizes subscription pattern + iCloud branding, categorizes as <span class="cat-tag">Software/SaaS</span></td></tr>
+      <tr><td>Delta Airlines - $890</td><td>Maps to Travel rule</td><td>Cross-references date with client calendar, categorizes as <span class="cat-tag">Travel / Client Visit</span> and links to relevant project</td></tr>
+      <tr><td>Transfer $10,000 - Account 4422</td><td>Flags as unknown</td><td>Recognizes known owner account from previous transfers, categorizes as <span class="cat-tag">Inter-Account Transfer</span> and excludes from P&amp;L</td></tr>
+    </table>
+  </div>
+</section>
+
+<section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <p class="section-label">How the learning works</p>
+    <h2 class="section-heading">It starts smart. It gets smarter every month.</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">Month 01</div>
+        <div class="how-title">Learning your clients</div>
+        <div class="how-desc">Aqqrue ingests historical transactions and learns each client's transaction patterns. Vendor relationships, seasonal spending, recurring amounts. It builds a fingerprint for each client.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">Month 02</div>
+        <div class="how-title">Getting sharper</div>
+        <div class="how-desc">Every correction your team makes teaches the model. The confidence score per transaction increases. Edge cases from month one get handled automatically in month two.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">Month 03+</div>
+        <div class="how-title">Fully autonomous</div>
+        <div class="how-desc">By month three, most firms see 96 to 99 percent categorization accuracy with no manual intervention. Your team reviews the outliers, not the routine.</div>
+      </div>
+    </div>
+
+    <div class="cta-strip" style="margin-top:48px;">
+      <h2>Stop making your team the categorization engine.</h2>
+      <p>Book a demo and see how Aqqrue handles your actual transaction mix.</p>
+      <a href="aqqrue-meher.html#contact" class="btn-grad">Book the demo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-note">Aqqrue &mdash; AI Co-Pilot for Accountants</span>
+  <a href="aqqrue-meher.html" class="back-link">&#8592; Back to main page</a>
+</footer>
+
+</body>
+</html>

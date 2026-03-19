@@ -898,7 +898,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 </div>
 
 <!-- APPLE-STYLE SCROLL REVEAL STAGE -->
-<div id="scroll-stage" style="height:260vh;position:relative;">
+<div id="scroll-stage" style="height:380vh;position:relative;">
   <div style="position:sticky;top:0;height:100vh;overflow:hidden;background:var(--bg);">
 
     <!-- Ambient glow -->
@@ -1004,7 +1004,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 }
 /* Document card visual */
 .vis-doc {
-  width:clamp(200px,28vw,320px); background:#141416;
+  width:min(460px,42vw); background:#141416;
   border:1px solid #2A2A2C; border-radius:14px;
   padding:24px; position:relative; overflow:hidden;
   box-shadow:0 24px 64px rgba(0,0,0,0.55);
@@ -1018,41 +1018,41 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   box-shadow:0 0 12px rgba(78,201,224,0.6);
 }
 /* Tags visual */
-.vis-tags { position:relative; width:clamp(260px,36vw,420px); height:280px; }
+.vis-tags { position:relative; width:min(560px,48vw); height:min(360px,60vh); }
 .vis-tag {
   position:absolute; font-size:clamp(11px,1.1vw,14px); font-weight:700;
   padding:8px 18px; border-radius:999px; white-space:nowrap;
   border:1px solid; backdrop-filter:blur(4px);
 }
 /* Reconciliation visual */
-.vis-recon { display:flex; gap:28px; align-items:center; width:clamp(260px,34vw,400px); }
+.vis-recon { display:flex; gap:28px; align-items:center; width:min(520px,44vw); }
 .vis-recon-col { flex:1; display:flex; flex-direction:column; gap:8px; }
 .vis-recon-item {
-  padding:10px 14px; border-radius:8px; font-size:clamp(9px,0.85vw,12px);
+  padding:13px 18px; border-radius:10px; font-size:clamp(12px,1.1vw,15px);
   font-weight:600; border:1px solid; text-align:center;
 }
 .vis-recon-item.matched { background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.28); color:#10B981; }
 .vis-recon-item.pending { background:rgba(200,180,154,0.08); border-color:rgba(200,180,154,0.25); color:#C8B49A; }
 .vis-recon-arrow { font-size:26px; color:var(--blue); flex-shrink:0; }
 /* Chart visual */
-.vis-chart { display:flex; align-items:flex-end; gap:10px; height:180px; padding:0 20px; }
+.vis-chart { display:flex; align-items:flex-end; gap:12px; height:min(240px,28vh); padding:0 24px; }
 .vis-bar {
   flex:1; border-radius:6px 6px 0 0; min-width:28px;
   background:linear-gradient(180deg,var(--blue),rgba(78,201,224,0.3));
   animation:bar-grow 1.2s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 /* Anomaly visual */
-.vis-list { width:clamp(240px,30vw,360px); display:flex; flex-direction:column; gap:8px; }
+.vis-list { width:min(480px,42vw); display:flex; flex-direction:column; gap:10px; }
 .vis-list-row {
-  padding:11px 16px; border-radius:8px; font-size:clamp(10px,0.9vw,13px);
+  padding:14px 20px; border-radius:10px; font-size:clamp(13px,1.1vw,16px);
   display:flex; justify-content:space-between; align-items:center;
   background:#141416; border:1px solid #27272A; font-weight:500;
 }
 .vis-list-row.anomaly { animation:anomaly-blink 1.6s ease-in-out infinite; color:#F87171; font-weight:700; }
 /* Chat visual */
-.vis-chat { display:flex; flex-direction:column; gap:12px; width:clamp(240px,32vw,380px); }
+.vis-chat { display:flex; flex-direction:column; gap:14px; width:min(500px,44vw); }
 .vis-bubble {
-  padding:14px 18px; border-radius:14px; font-size:clamp(12px,1.1vw,15px);
+  padding:16px 22px; border-radius:16px; font-size:clamp(14px,1.3vw,17px);
   line-height:1.55; animation:chat-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 .vis-bubble.q {
@@ -1082,6 +1082,8 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <div id="cap-stage">
   <div id="cap-sticky" style="height:100vh;overflow:hidden;position:relative;background:#09090B;">
 
+    <!-- 3D background canvas -->
+    <canvas id="cap-canvas-3d" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.4;z-index:0;"></canvas>
     <!-- Sticky header -->
     <div style="position:absolute;top:0;left:0;right:0;z-index:20;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(9,9,11,0.9) 0%,transparent 100%);">
       <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);">6 things they were never hired to do</div>
@@ -1094,7 +1096,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
       <!-- SLIDE 1: Document Processing -->
       <div class="cap-slide">
         <div class="cap-slide-left">
-          <div class="cap-num-bg">01</div>
           <div class="cap-label-num" style="color:#4EC9E0;">01 &mdash; Document Processing</div>
           <h2 class="cap-slide-h2">Drop a file.<br>Walk away.<br>It&#8217;s already filed.</h2>
           <p class="cap-slide-p">Bank statements, invoices, receipts — Aqqrue reads every line and categorizes in seconds. No manual keying, no missed fields, no copy-paste marathon.</p>
@@ -1119,7 +1120,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
       <!-- SLIDE 2: Auto-Categorization -->
       <div class="cap-slide">
         <div class="cap-slide-left">
-          <div class="cap-num-bg">02</div>
           <div class="cap-label-num" style="color:#10B981;">02 &mdash; Auto-Categorization</div>
           <h2 class="cap-slide-h2">It knows it&#8217;s<br>travel before<br>you open it.</h2>
           <p class="cap-slide-p">The AI learns each client&#8217;s transaction patterns and categorizes correctly from day one. Gets sharper every month. Never fatigued, never inconsistent.</p>
@@ -1141,7 +1141,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
       <!-- SLIDE 3: Reconciliation -->
       <div class="cap-slide">
         <div class="cap-slide-left">
-          <div class="cap-num-bg">03</div>
           <div class="cap-label-num" style="color:#A78BFA;">03 &mdash; Reconciliation</div>
           <h2 class="cap-slide-h2">Month-end close.<br>Done before<br>lunch. Seriously.</h2>
           <p class="cap-slide-p">Bank entries matched to invoices automatically. Mismatches flagged for your review. What used to take days now takes under twenty minutes.</p>
@@ -1170,7 +1169,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
       <!-- SLIDE 4: Report Generation -->
       <div class="cap-slide">
         <div class="cap-slide-left">
-          <div class="cap-num-bg">04</div>
           <div class="cap-label-num" style="color:#C8B49A;">04 &mdash; Report Generation</div>
           <h2 class="cap-slide-h2">Your client wants<br>the P&amp;L.<br>It&#8217;s already done.</h2>
           <p class="cap-slide-p">Balance sheets, P&amp;L statements, custom client reports — generated on demand in your firm&#8217;s format. Zero manual assembly, zero formatting time.</p>
@@ -1196,7 +1194,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
       <!-- SLIDE 5: Anomaly Detection -->
       <div class="cap-slide">
         <div class="cap-slide-left">
-          <div class="cap-num-bg">05</div>
           <div class="cap-label-num" style="color:#F87171;">05 &mdash; Anomaly Detection</div>
           <h2 class="cap-slide-h2">It caught the<br>duplicate charge<br>you would have missed.</h2>
           <p class="cap-slide-p">Duplicates, misclassifications, unusual entries — flagged before they become your problem. A quiet safety net running under every single transaction.</p>
@@ -1215,7 +1212,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
       <!-- SLIDE 6: Natural Language -->
       <div class="cap-slide">
         <div class="cap-slide-left">
-          <div class="cap-num-bg">06</div>
           <div class="cap-label-num" style="color:#4EC9E0;">06 &mdash; Natural Language</div>
           <h2 class="cap-slide-h2">Ask your books<br>a question.<br>In plain English.</h2>
           <p class="cap-slide-p">Before every client call, just ask. &#8220;What did they spend on travel last quarter?&#8221; An answer in seconds, not after thirty minutes of filtering spreadsheets.</p>
@@ -1348,6 +1344,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 
 <!-- DEMO -->
 <section id="demo" style="position:relative;overflow:hidden;">
+  <canvas id="demo-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.45;z-index:0;"></canvas>
   <div class="section-orb orb-teal" style="width:600px;height:600px;top:-200px;left:-200px;"></div>
   <div class="section-orb orb-blue" style="width:380px;height:380px;bottom:-100px;right:-100px;"></div>
   <!-- Floating transaction badges -->
@@ -1436,6 +1433,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 
 <!-- HOW IT WORKS -->
 <section id="how" style="position:relative;overflow:hidden;">
+  <canvas id="how-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.35;z-index:0;"></canvas>
   <div class="section-orb orb-beige" style="width:500px;height:500px;top:-150px;right:-100px;"></div>
   <div class="section-orb orb-blue" style="width:350px;height:350px;bottom:-100px;left:-80px;"></div>
   <div class="container">
@@ -1465,7 +1463,8 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 </section>
 
 <!-- IMPACT -->
-<section id="impact">
+<section id="impact" style="position:relative;overflow:hidden;">
+  <canvas id="impact-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.35;z-index:0;"></canvas>
   <div class="container">
     <p class="section-label fade-up">Impact</p>
     <h2 class="section-heading fade-up">Go ahead. Call our bluff. These are real.</h2>
@@ -2187,6 +2186,112 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
+
+// ===== SHARED PARTICLE CANVAS INITIALIZER =====
+function initParticleCanvas(id, color1, color2, nodeCount, speed) {
+  const canvas = document.getElementById(id);
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, pts;
+  function resize(){ W=canvas.width=canvas.offsetWidth; H=canvas.height=canvas.offsetHeight; }
+  function mk(){
+    pts=[];
+    for(let i=0;i<nodeCount;i++) pts.push({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-0.5)*speed, vy:(Math.random()-0.5)*speed,
+      r:Math.random()*1.8+0.6
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const CONN = Math.min(W,H) * 0.22;
+    for(let i=0;i<pts.length;i++){
+      const a=pts[i];
+      a.x+=a.vx; a.y+=a.vy;
+      if(a.x<0||a.x>W)a.vx*=-1;
+      if(a.y<0||a.y>H)a.vy*=-1;
+      ctx.beginPath(); ctx.arc(a.x,a.y,a.r,0,Math.PI*2);
+      ctx.fillStyle=color1; ctx.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const b=pts[j], d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<CONN){
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=color2.replace('$A', String((0.18*(1-d/CONN)).toFixed(2)));
+          ctx.lineWidth=0.7; ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();mk();});
+  resize(); mk(); draw();
+}
+
+// ── Rotating 3D grid behind capabilities ──────────────────────────────────
+(function(){
+  const canvas = document.getElementById('cap-canvas-3d');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, angle = 0;
+  const COLS=12, ROWS=7;
+  function resize(){ W=canvas.width=canvas.offsetWidth; H=canvas.height=canvas.offsetHeight; }
+  function project(x,y,z){
+    const fov=600, s=fov/(fov+z);
+    return { x: W/2 + x*s, y: H/2 + y*s, s };
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    angle += 0.004;
+    const cosA=Math.cos(angle), sinA=Math.sin(angle);
+    const cosB=Math.cos(angle*0.38), sinB=Math.sin(angle*0.38);
+    const pts=[];
+    for(let r=0;r<ROWS;r++){
+      for(let c=0;c<COLS;c++){
+        let x=(c-COLS/2)*110, y=(r-ROWS/2)*90, z=0;
+        // rotate Y
+        let x2=x*cosA - z*sinA, z2=x*sinA + z*cosA;
+        // rotate X
+        let y2=y*cosB - z2*sinB, z3=y*sinB + z2*cosB;
+        const p=project(x2,y2,z3);
+        pts.push({...p, z:z3, r, c});
+        ctx.beginPath(); ctx.arc(p.x,p.y, Math.max(0.8, p.s*2.2), 0, Math.PI*2);
+        const alpha = Math.max(0, 0.5 - (z3+300)/900);
+        ctx.fillStyle=`rgba(78,201,224,${alpha.toFixed(2)})`; ctx.fill();
+      }
+    }
+    // draw grid lines
+    ctx.lineWidth=0.5;
+    for(let r=0;r<ROWS;r++){
+      for(let c=0;c<COLS-1;c++){
+        const a=pts[r*COLS+c], b=pts[r*COLS+c+1];
+        const alpha = Math.max(0, 0.18 - (a.z+300)/2200);
+        ctx.strokeStyle=`rgba(78,201,224,${alpha.toFixed(3)})`;
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+    for(let r=0;r<ROWS-1;r++){
+      for(let c=0;c<COLS;c++){
+        const a=pts[r*COLS+c], b=pts[(r+1)*COLS+c];
+        const alpha = Math.max(0, 0.14 - (a.z+300)/2200);
+        ctx.strokeStyle=`rgba(200,180,154,${alpha.toFixed(3)})`;
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', resize);
+  resize(); draw();
+})();
+
+// ── Demo section particles (warmer, beige-tinted) ─────────────────────────
+initParticleCanvas('demo-canvas','rgba(200,180,154,0.8)','rgba(200,180,154,$A)', 45, 0.22);
+
+// ── How it works particles (ice blue) ────────────────────────────────────
+initParticleCanvas('how-canvas','rgba(78,201,224,0.7)','rgba(78,201,224,$A)', 38, 0.18);
+
+// ── Impact particles (mixed) ───────────────────────────────────────────────
+initParticleCanvas('impact-canvas','rgba(78,201,224,0.65)','rgba(78,201,224,$A)', 35, 0.2);
+
 </script>
 </body>
 </html>

@@ -161,9 +161,9 @@ section { padding: 100px 24px; }
   letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px;
 }
 .section-heading {
-  font-family: Impact, 'Arial Narrow', sans-serif;
-  font-size: clamp(28px, 4vw, 46px); font-weight: 400;
-  letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 4vw, 46px); font-weight: 600;
+  letter-spacing: -1px; line-height: 1.15; margin-bottom: 14px;
 }
 .section-sub {
   color: var(--text-sec); font-size: 17px; line-height: 1.75; max-width: 580px;
@@ -284,9 +284,9 @@ section { padding: 100px 24px; }
 }
 
 .hero-h1 {
-  font-family: Impact, 'Arial Narrow', sans-serif;
-  font-size: clamp(38px, 6.5vw, 76px); font-weight: 400;
-  letter-spacing: -1px; line-height: 1.1; margin-bottom: 24px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(38px, 6.5vw, 76px); font-weight: 600;
+  letter-spacing: -2px; line-height: 1.08; margin-bottom: 24px;
   animation: fadeup 0.85s ease 0.1s both;
 }
 .hero-sub {
@@ -548,8 +548,8 @@ section { padding: 100px 24px; }
 }
 .twist-inner { position: relative; z-index: 1; max-width: 820px; padding: 0 24px; }
 .twist-line {
-  font-family: Impact, 'Arial Narrow', sans-serif;
-  font-size: clamp(38px, 7vw, 82px); font-weight: 400; letter-spacing: -1px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(38px, 7vw, 82px); font-weight: 700; letter-spacing: -2px;
   line-height: 1.08; opacity: 0;
 }
 .twist-line.show { animation: tw-fade 0.75s cubic-bezier(0.2,0,0.2,1) forwards; }
@@ -571,9 +571,24 @@ section { padding: 100px 24px; }
   width: 100%; position: relative;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-.video-embed .instagram-media {
-  margin: 0 auto !important; min-width: 100% !important; border-radius: 12px !important;
+.reel-link {
+  display: inline-flex; align-items: center; gap: 24px;
+  padding: 28px 40px; border-radius: 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  text-decoration: none; color: var(--text);
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+  max-width: 480px; width: 100%;
 }
+.reel-link:hover { border-color: var(--blue); box-shadow: 0 0 40px rgba(78,201,224,0.12); transform: translateY(-2px); }
+.reel-play {
+  width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+  background: var(--grad); display: flex; align-items: center; justify-content: center;
+  font-size: 22px; transition: transform 0.2s, box-shadow 0.2s;
+}
+.reel-link:hover .reel-play { transform: scale(1.08); box-shadow: 0 0 28px rgba(78,201,224,0.4); }
+.reel-text { text-align: left; }
+.reel-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 5px; }
+.reel-sub { font-size: 13px; color: var(--text-muted); }
 .video-placeholder-inner { text-align: center; }
 .play-btn {
   width: 62px; height: 62px; border-radius: 50%;
@@ -582,7 +597,6 @@ section { padding: 100px 24px; }
   font-size: 22px; margin: 0 auto 14px; cursor: pointer;
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
-.video-embed:hover .play-btn { background: rgba(99,102,241,0.5); transform: scale(1.1); box-shadow: 0 0 24px rgba(99,102,241,0.4); }
 .video-lbl { font-size: 15px; font-weight: 500; color: var(--text-sec); }
 
 /* MEHER */
@@ -614,7 +628,7 @@ section { padding: 100px 24px; }
   background: rgba(78,201,224,0.10); border: 1px solid rgba(78,201,224,0.28);
   font-size: 12px; font-weight: 600; color: #7DD8EC; letter-spacing: 0.3px; margin-bottom: 20px;
 }
-.meher-h2 { font-family: Impact, 'Arial Narrow', sans-serif; font-size: clamp(36px, 5vw, 64px); font-weight: 400; letter-spacing: -1px; margin-bottom: 22px; }
+.meher-h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(36px, 5vw, 64px); font-weight: 600; letter-spacing: -2px; margin-bottom: 22px; }
 .meher-p { font-size: 17px; color: var(--text-sec); line-height: 1.8; margin-bottom: 18px; }
 .meher-p strong { color: var(--text); font-weight: 700; }
 
@@ -631,7 +645,7 @@ section { padding: 100px 24px; }
   background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
 }
 .why-card:hover::after { transform: scaleX(1); }
-.why-card:hover { border-color: rgba(99,102,241,0.28); transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,0.3); }
+.why-card:hover { border-color: rgba(78,201,224,0.35); transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,0.3); }
 .why-num { font-size: 11px; font-weight: 700; color: var(--yellow); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
 .why-title { font-size: 19px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 12px; }
 .why-desc { font-size: 14px; color: var(--text-sec); line-height: 1.75; }
@@ -642,7 +656,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 .footer-brand { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
 .footer-brand .logo-accent { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .footer-brand-sub { font-size: 13px; color: var(--text-muted); margin-top: 7px; max-width: 220px; line-height: 1.6; }
-.footer-cta { font-family: Impact, 'Arial Narrow', sans-serif; font-size: clamp(20px, 3.2vw, 36px); font-weight: 400; letter-spacing: -0.5px; text-align: center; flex: 1; line-height: 1.2; }
+.footer-cta { font-family: 'Space Grotesk', sans-serif; font-size: clamp(20px, 3.2vw, 36px); font-weight: 600; letter-spacing: -1px; text-align: center; flex: 1; line-height: 1.2; }
 .footer-icons { display: flex; gap: 10px; }
 .f-btn {
   width: 40px; height: 40px; border-radius: 8px;
@@ -773,26 +787,26 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <!-- TRUSTED BY -->
 <div id="trusted">
   <div class="trusted-inner">
-    <div class="trusted-label">Trusted by accounting firms across the United States</div>
+    <div class="trusted-label">Integrates with the tools your firm already uses</div>
     <div class="marquee-wrap">
       <div class="marquee-track">
-        <span class="marquee-item">Meridian CPAs</span>
-        <span class="marquee-item">Stonebridge Bookkeeping</span>
-        <span class="marquee-item">Parkhurst &amp; Co</span>
-        <span class="marquee-item">Oakfield Financial</span>
-        <span class="marquee-item">Summit Accounting Group</span>
-        <span class="marquee-item">Clearview Partners</span>
-        <span class="marquee-item">Northgate CPA</span>
-        <span class="marquee-item">Ridgeline Advisors</span>
+        <span class="marquee-item">QuickBooks</span>
+        <span class="marquee-item">Xero</span>
+        <span class="marquee-item">Stripe</span>
+        <span class="marquee-item">Gusto</span>
+        <span class="marquee-item">Bill.com</span>
+        <span class="marquee-item">Plaid</span>
+        <span class="marquee-item">Dext</span>
+        <span class="marquee-item">Hubdoc</span>
         <!-- duplicate for seamless loop -->
-        <span class="marquee-item">Meridian CPAs</span>
-        <span class="marquee-item">Stonebridge Bookkeeping</span>
-        <span class="marquee-item">Parkhurst &amp; Co</span>
-        <span class="marquee-item">Oakfield Financial</span>
-        <span class="marquee-item">Summit Accounting Group</span>
-        <span class="marquee-item">Clearview Partners</span>
-        <span class="marquee-item">Northgate CPA</span>
-        <span class="marquee-item">Ridgeline Advisors</span>
+        <span class="marquee-item">QuickBooks</span>
+        <span class="marquee-item">Xero</span>
+        <span class="marquee-item">Stripe</span>
+        <span class="marquee-item">Gusto</span>
+        <span class="marquee-item">Bill.com</span>
+        <span class="marquee-item">Plaid</span>
+        <span class="marquee-item">Dext</span>
+        <span class="marquee-item">Hubdoc</span>
       </div>
     </div>
   </div>
@@ -1158,14 +1172,13 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="video-outer">
       <div class="video-box fade-up">
         <div class="video-embed" id="video-embed">
-          <blockquote
-            class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/reel/DTgJBc8koy9/?utm_source=ig_embed&utm_campaign=loading"
-            data-instgrm-version="14"
-            style="background:#09090B; border:0; border-radius:12px; margin:0 auto; max-width:420px; min-width:326px; padding:0; width:100%;">
-          </blockquote>
-          <script async src="//www.instagram.com/embed.js"></script>
+          <a href="https://www.instagram.com/reel/DTgJBc8koy9/" target="_blank" rel="noopener" class="reel-link">
+            <div class="reel-play">&#9654;</div>
+            <div class="reel-text">
+              <div class="reel-title">Watch the 60-second reel</div>
+              <div class="reel-sub">Opens on Instagram</div>
+            </div>
+          </a>
         </div>
       </div>
     </div>
@@ -1205,18 +1218,18 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="why-grid">
       <div class="why-card fade-up">
         <div class="why-num">Skill 01</div>
-        <div class="why-title">Marketing Instincts</div>
-        <p class="why-desc">I do not just make content. I think in campaigns, narratives, and systems. I obsess over why people click, share, and trust things. That is not taught in a classroom. You either have it or you do not.</p>
+        <div class="why-title">Thinks in Systems, Not Posts</div>
+        <p class="why-desc">I do not open a blank doc and start writing. I research the product, map the competitors, and understand the audience before a single word goes down. Every headline on this page exists for a specific reason. That is not a coincidence, that is how I work.</p>
       </div>
       <div class="why-card fade-up">
         <div class="why-num">Skill 02</div>
-        <div class="why-title">Zero Hand-Holding Required</div>
-        <p class="why-desc">You said you want someone who requires zero follow-up. I read a job description, researched your company and your entire competitive landscape, and built you a website. Without being asked. That is the preview.</p>
+        <div class="why-title">No Brief. No Follow-Up. Just Done.</div>
+        <p class="why-desc">I was handed a job description. No brand guide, no Figma file, no onboarding call. I researched your company, studied your competitive space, and built this entire website. That is not the application. That is the work ethic.</p>
       </div>
       <div class="why-card fade-up">
         <div class="why-num">Skill 03</div>
-        <div class="why-title">Learns Like a Machine</div>
-        <p class="why-desc">Five hours ago I knew nothing about accounting. Now I can explain reconciliation, transaction categorization, and why Botkeeper struggled to hold its position. Give me a new domain and I will own it in a week.</p>
+        <div class="why-title">Fast in Any Domain</div>
+        <p class="why-desc">I went from knowing nothing about accounting to writing technically accurate copy on reconciliation, categorization, and month-end close before the first review call. Give me a new category and I will own it faster than you expect.</p>
       </div>
     </div>
   </div>

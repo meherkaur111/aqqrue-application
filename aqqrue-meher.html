@@ -493,7 +493,22 @@ section { padding: 100px 24px; }
 
 /* TESTIMONIALS */
 #testimonials { background: var(--surface); }
-.testi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 48px; }
+.testi-carousel { position: relative; margin-top: 48px; overflow: hidden; }
+.testi-track { display: flex; transition: transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94); will-change: transform; }
+.testi-slide { min-width: 100%; padding: 0 2px; }
+.testi-nav { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 32px; }
+.testi-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s, color 0.2s, transform 0.15s; }
+.testi-arrow:hover { border-color: var(--blue); color: var(--text); transform: scale(1.08); }
+.testi-dots { display: flex; gap: 8px; align-items: center; }
+.testi-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.25s, width 0.3s, border-radius 0.3s; }
+.testi-dot.active { background: var(--blue); width: 22px; border-radius: 4px; }
+.testi-company { display: flex; align-items: center; gap: 12px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
+.company-logo { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; letter-spacing: -0.5px; flex-shrink: 0; }
+.company-info { display: flex; flex-direction: column; gap: 1px; }
+.company-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.company-loc { font-size: 11px; color: var(--text-muted); }
+.testi-view-all { display: inline-flex; align-items: center; gap: 8px; margin-top: 40px; font-size: 14px; font-weight: 600; color: var(--blue); text-decoration: none; transition: gap 0.2s; }
+.testi-view-all:hover { gap: 12px; }
 .testi-card {
   padding: 32px; border-radius: 12px;
   background: var(--bg); border: 1px solid var(--border);
@@ -693,7 +708,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   .step { padding: 0 0 36px; }
   .meher-grid { grid-template-columns: 1fr; }
   .meher-photo-col { margin: 0 auto; }
-  .testi-grid { grid-template-columns: 1fr; }
   .stat-item { padding: 14px 28px; }
   .hero-stats { flex-wrap: wrap; gap: 0; }
   .form-row-2 { grid-template-columns: 1fr; }
@@ -768,6 +782,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         </div>
       </div>
     </div>
+    <canvas id="hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.55;"></canvas>
     <div class="hero-noise"></div>
   </div>
   <div class="hero-inner">
@@ -824,6 +839,54 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         <span class="marquee-item"><img class="marquee-logo" src="https://www.google.com/s2/favicons?domain=dext.com&sz=64" alt="">Dext</span>
         <span class="marquee-item"><img class="marquee-logo" src="https://www.google.com/s2/favicons?domain=hubdoc.com&sz=64" alt="">Hubdoc</span>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3D LAPTOP INTRO -->
+<div id="laptop-intro" style="padding:80px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;">
+  <div style="perspective:1400px;perspective-origin:50% 40%;width:100%;max-width:700px;padding:0 24px;">
+    <div id="laptop-3d" style="transform-style:preserve-3d;position:relative;">
+      <!-- Screen lid -->
+      <div id="laptop-lid" style="
+        width:100%;padding-bottom:62%;background:#1A1A1F;border-radius:12px 12px 0 0;
+        border:2px solid #2A2A30;position:relative;
+        transform:rotateX(-88deg);transform-origin:bottom center;
+        transform-style:preserve-3d;
+        transition:transform 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
+        box-shadow:0 -8px 40px rgba(78,201,224,0.15);
+      ">
+        <!-- Screen content -->
+        <div style="position:absolute;inset:8px;border-radius:6px;background:#09090B;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:9px;font-weight:700;color:#4EC9E0;letter-spacing:1px;text-transform:uppercase;">Aqqrue / October</span>
+            <span style="font-size:9px;color:#10B981;font-weight:700;">44 / 47 Auto-filed</span>
+          </div>
+          <div style="height:4px;background:#27272A;border-radius:2px;"><div style="height:100%;width:93.6%;background:linear-gradient(90deg,#4EC9E0,#C8B49A);border-radius:2px;"></div></div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;background:#18181B;border-radius:5px;padding:6px 10px;">
+              <span style="font-size:8px;color:#A1A1AA;">Stripe payout Oct 3</span>
+              <span style="font-size:8px;color:#34D399;font-weight:700;">+$8,400</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:#18181B;border-radius:5px;padding:6px 10px;">
+              <span style="font-size:8px;color:#A1A1AA;">AWS Invoice #4421</span>
+              <span style="font-size:8px;color:#FAFAFA;font-weight:700;">-$312</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(78,201,224,0.06);border:1px solid rgba(78,201,224,0.15);border-radius:5px;padding:6px 10px;">
+              <span style="font-size:8px;color:#4EC9E0;">Transfer — needs review</span>
+              <span style="font-size:8px;color:#C8B49A;font-weight:700;">-$5,000</span>
+            </div>
+          </div>
+        </div>
+        <!-- Camera dot -->
+        <div style="position:absolute;top:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#27272A;"></div>
+      </div>
+      <!-- Base -->
+      <div style="
+        width:100%;height:18px;background:linear-gradient(180deg,#222228,#1A1A1F);
+        border-radius:0 0 8px 8px;border:2px solid #2A2A30;border-top:none;
+        box-shadow:0 8px 32px rgba(0,0,0,0.6);
+      "></div>
     </div>
   </div>
 </div>
@@ -1090,30 +1153,61 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <p class="section-label fade-up">Customers</p>
     <h2 class="section-heading fade-up">Actual quotes from accountants who now leave the office before 6pm.</h2>
 
-    <div class="testi-grid">
-      <div class="testi-card fade-up">
-        <div class="testi-quote">"</div>
-        <p class="testi-text">Month-end used to mean cancelling plans. Four days of chasing clients for receipts, cross-checking line items, catching errors at 11pm. First month on Aqqrue, I was done by 2pm on the first. My team thought I forgot something.</p>
-        <div class="testi-name">Priya K.</div>
-        <div class="testi-role">Managing Partner, 14-person firm, Austin TX</div>
+    <div class="testi-carousel" id="testi-carousel">
+      <div class="testi-track" id="testi-track">
+        <div class="testi-slide">
+          <div class="testi-card">
+            <div class="testi-quote">"</div>
+            <p class="testi-text">Month-end used to mean cancelling plans. Four days of chasing clients for receipts, cross-checking line items, catching errors at 11pm. First month on Aqqrue, I was done by 2pm on the first. My team thought I forgot something.</p>
+            <div class="testi-company">
+              <div class="company-logo" style="background:rgba(78,201,224,0.14);color:#4EC9E0;">PK</div>
+              <div class="company-info"><div class="company-name">Priya K. &mdash; Pinnacle Advisory Group</div><div class="company-loc">Managing Partner, 14-person firm, Austin TX</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-card">
+            <div class="testi-quote">"</div>
+            <p class="testi-text">I have been an independent bookkeeper for eleven years. I tried three different AI tools before this. They all required more work than they saved. Aqqrue is the first one that actually handled the part I hate, not just the part that looks impressive in a demo.</p>
+            <div class="testi-company">
+              <div class="company-logo" style="background:rgba(16,185,129,0.14);color:#10B981;">TB</div>
+              <div class="company-info"><div class="company-name">Marcus T. &mdash; TrueBooks Co.</div><div class="company-loc">Independent Bookkeeper, Chicago IL</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-card">
+            <div class="testi-quote">"</div>
+            <p class="testi-text">We onboarded three new clients in the same quarter we adopted Aqqrue. Normally that would have broken the team. Instead, no one noticed the extra load. That is the clearest signal I can give about how much it actually moved the needle.</p>
+            <div class="testi-company">
+              <div class="company-logo" style="background:rgba(200,180,154,0.18);color:#C8B49A;">MC</div>
+              <div class="company-info"><div class="company-name">Rachel M. &mdash; Meridian CPA Partners</div><div class="company-loc">Founder, 8-person firm, Denver CO</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-card">
+            <div class="testi-quote">"</div>
+            <p class="testi-text">The categorization accuracy is what got me. After about thirty days, it stopped making the mistakes my junior staff was making. That is when I realised this was not automation for the sake of it. It was genuinely better at the repetitive stuff than people are.</p>
+            <div class="testi-company">
+              <div class="company-logo" style="background:rgba(139,92,246,0.14);color:#A78BFA;">SF</div>
+              <div class="company-info"><div class="company-name">David L. &mdash; Summit Financial Group</div><div class="company-loc">Senior Accountant, 22-person firm, Seattle WA</div></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="testi-card fade-up">
-        <div class="testi-quote">"</div>
-        <p class="testi-text">I have been an independent bookkeeper for eleven years. I tried three different "AI tools" before this. They all required more work than they saved. Aqqrue is the first one that actually handled the part I hate, not just the part that looks impressive in a demo.</p>
-        <div class="testi-name">Marcus T.</div>
-        <div class="testi-role">Independent Bookkeeper, Chicago IL</div>
+      <div class="testi-nav">
+        <button class="testi-arrow" id="testi-prev">&#8592;</button>
+        <div class="testi-dots" id="testi-dots">
+          <span class="testi-dot active"></span>
+          <span class="testi-dot"></span>
+          <span class="testi-dot"></span>
+          <span class="testi-dot"></span>
+        </div>
+        <button class="testi-arrow" id="testi-next">&#8594;</button>
       </div>
-      <div class="testi-card fade-up">
-        <div class="testi-quote">"</div>
-        <p class="testi-text">We onboarded three new clients in the same quarter we adopted Aqqrue. Normally that would have broken the team. Instead, no one noticed the extra load. That is the clearest signal I can give about how much it actually moved the needle.</p>
-        <div class="testi-name">Rachel M.</div>
-        <div class="testi-role">Founder, 8-person CPA firm, Denver CO</div>
-      </div>
-      <div class="testi-card fade-up">
-        <div class="testi-quote">"</div>
-        <p class="testi-text">The categorization accuracy is what got me. After about thirty days, it stopped making the mistakes my junior staff was making. That is when I realised this was not automation for the sake of it. It was genuinely better at the repetitive stuff than people are.</p>
-        <div class="testi-name">David L.</div>
-        <div class="testi-role">Senior Accountant, 22-person firm, Seattle WA</div>
+      <div style="text-align:center;">
+        <a href="reviews.html" class="testi-view-all">See all reviews &#8594;</a>
       </div>
     </div>
   </div>
@@ -1271,6 +1365,107 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   </div>
 </footer>
 
+<script>
+// ===== HERO CANVAS PARTICLES =====
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, pts;
+  const N = 70, CONN = 140, SPEED = 0.3;
+  function resize(){ W=canvas.width=canvas.offsetWidth; H=canvas.height=canvas.offsetHeight; }
+  function mk(){
+    pts=[];
+    for(let i=0;i<N;i++) pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*SPEED,vy:(Math.random()-0.5)*SPEED,r:Math.random()*1.5+0.5});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<N;i++){
+      const a=pts[i];
+      a.x+=a.vx; a.y+=a.vy;
+      if(a.x<0||a.x>W) a.vx*=-1;
+      if(a.y<0||a.y>H) a.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(a.x,a.y,a.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(78,201,224,0.7)';
+      ctx.fill();
+      for(let j=i+1;j<N;j++){
+        const b=pts[j];
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<CONN){
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=`rgba(78,201,224,${0.18*(1-d/CONN)})`;
+          ctx.lineWidth=0.6;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();mk();});
+  resize(); mk(); draw();
+})();
+
+// ===== 3D LAPTOP OPEN ON SCROLL =====
+(function(){
+  const lid = document.getElementById('laptop-lid');
+  if(!lid) return;
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ lid.style.transform='rotateX(-18deg)'; obs.disconnect(); }
+    });
+  },{threshold:0.4});
+  obs.observe(document.getElementById('laptop-intro'));
+})();
+
+// ===== TESTIMONIALS SLIDER =====
+(function(){
+  const track = document.getElementById('testi-track');
+  if(!track) return;
+  const slides = track.querySelectorAll('.testi-slide');
+  const dots = document.querySelectorAll('.testi-dot');
+  const total = slides.length;
+  let idx = 0, timer;
+  function goTo(n){
+    idx = (n+total)%total;
+    track.style.transform = `translateX(-${idx*100}%)`;
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  }
+  function start(){ timer=setInterval(()=>goTo(idx+1),4800); }
+  function stop(){ clearInterval(timer); }
+  document.getElementById('testi-prev').addEventListener('click',()=>{stop();goTo(idx-1);start();});
+  document.getElementById('testi-next').addEventListener('click',()=>{stop();goTo(idx+1);start();});
+  dots.forEach((d,i)=>d.addEventListener('click',()=>{stop();goTo(i);start();}));
+  const car = document.getElementById('testi-carousel');
+  car.addEventListener('mouseenter',stop);
+  car.addEventListener('mouseleave',start);
+  // Touch/swipe support
+  let tx=0;
+  track.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{ passive:true });
+  track.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx;
+    if(Math.abs(dx)>40){stop();goTo(dx<0?idx+1:idx-1);start();}
+  });
+  start();
+})();
+
+// ===== 3D CARD TILT =====
+document.querySelectorAll('.cap-card,.why-card,.impact-card,.how-step').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-0.5;
+    const y=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform=`perspective(900px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-4px) scale(1.01)`;
+    card.style.transition='transform 0.05s';
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+    card.style.transition='transform 0.4s ease';
+  });
+});
+</script>
 <script>
 // CURSOR
 const cur = document.getElementById('cursor');

@@ -444,7 +444,7 @@ section { padding: 100px 24px; }
 .steps-row::before {
   content: ''; position: absolute; top: 25px;
   left: calc(16.67% + 14px); right: calc(16.67% + 14px); height: 1px;
-  background: linear-gradient(90deg, rgba(99,102,241,0.5) 0%, rgba(234,179,8,0.4) 100%);
+  background: linear-gradient(90deg, rgba(78,201,224,0.45) 0%, rgba(200,180,154,0.45) 100%);
 }
 .step-line { position: absolute; top: 25px; left: calc(16.67% + 14px); height: 2px; width: 0; background: var(--grad); transition: width 1.6s cubic-bezier(0.4,0,0.2,1); z-index: 2; }
 .step { padding: 0 24px; }
@@ -471,6 +471,21 @@ section { padding: 100px 24px; }
 .impact-big { font-size: 52px; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 12px; }
 .impact-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.2px; }
 .impact-body { font-size: 14px; color: var(--text-sec); line-height: 1.65; }
+
+/* SECTION ANIMATED BACKGROUNDS */
+.section-orb {
+  position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+  filter: blur(80px); animation: orb-drift 18s ease-in-out infinite alternate;
+}
+@keyframes orb-drift {
+  0%   { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(40px,-30px) scale(1.08); }
+  66%  { transform: translate(-30px,40px) scale(0.94); }
+  100% { transform: translate(20px,20px) scale(1.04); }
+}
+.orb-blue  { background: radial-gradient(circle, rgba(78,201,224,0.18) 0%, transparent 70%); }
+.orb-beige { background: radial-gradient(circle, rgba(200,180,154,0.12) 0%, transparent 70%); animation-delay: -7s; animation-duration: 22s; }
+.orb-teal  { background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%); animation-delay: -13s; animation-duration: 26s; }
 
 /* INTEGRATIONS */
 #integrations { background: var(--bg); text-align: center; }
@@ -847,54 +862,59 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 
 <!-- APPLE-STYLE SCROLL REVEAL STAGE -->
 <div id="scroll-stage" style="height:380vh;position:relative;">
-  <div style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--bg);">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden;background:var(--bg);">
 
     <!-- Ambient glow -->
-    <div id="sr-glow" style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(78,201,224,0.06) 0%,transparent 70%);pointer-events:none;opacity:0;"></div>
+    <div id="sr-glow" style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(78,201,224,0.07) 0%,transparent 70%);pointer-events:none;opacity:0;"></div>
 
-    <!-- Scene 1 -->
-    <div id="sr-t1" style="position:absolute;text-align:center;padding:0 24px;will-change:opacity,transform;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:20px;">Month-end close</div>
-      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7vw,86px);font-weight:600;letter-spacing:-3px;line-height:1.05;max-width:800px;">Open your laptop.<br><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">It's already done.</span></h2>
+    <!-- TEXT ZONE — always upper portion, never overlaps dashboard -->
+    <div style="position:absolute;top:0;left:0;right:0;height:55%;display:flex;align-items:center;justify-content:center;">
+
+      <!-- Scene 1 -->
+      <div id="sr-t1" style="position:absolute;text-align:center;padding:0 24px;will-change:opacity,transform;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#4EC9E0;margin-bottom:20px;">Month-end close</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6.5vw,80px);font-weight:600;letter-spacing:-2.5px;line-height:1.06;max-width:780px;">Open your laptop.<br><span style="background:linear-gradient(135deg,#4EC9E0,#C8B49A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">It's already done.</span></h2>
+      </div>
+
+      <!-- Scene 2 -->
+      <div id="sr-t2" style="position:absolute;text-align:center;padding:0 24px;opacity:0;will-change:opacity,transform;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#4EC9E0;margin-bottom:20px;">Automated</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6.5vw,80px);font-weight:600;letter-spacing:-2.5px;line-height:1.06;max-width:780px;"><span style="background:linear-gradient(135deg,#4EC9E0,#C8B49A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">44 of 47</span> transactions<br>handled. Without you.</h2>
+      </div>
+
+      <!-- Scene 3 -->
+      <div id="sr-t3" style="position:absolute;text-align:center;padding:0 24px;opacity:0;will-change:opacity,transform;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#4EC9E0;margin-bottom:20px;">Your actual job</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6.5vw,80px);font-weight:600;letter-spacing:-2.5px;line-height:1.06;max-width:780px;">3 things need<br><span style="background:linear-gradient(135deg,#4EC9E0,#C8B49A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">your judgment.</span></h2>
+        <p style="font-size:17px;color:#A8A09A;margin-top:22px;line-height:1.7;max-width:400px;margin-left:auto;margin-right:auto;">That is what your accounting degree is for.<br>Not the other 44.</p>
+      </div>
+
     </div>
 
-    <!-- Scene 2 -->
-    <div id="sr-t2" style="position:absolute;text-align:center;padding:0 24px;opacity:0;will-change:opacity,transform;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:20px;">Automated</div>
-      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7vw,86px);font-weight:600;letter-spacing:-3px;line-height:1.05;max-width:800px;"><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">44 of 47</span> transactions<br>handled. Without you.</h2>
-    </div>
-
-    <!-- Scene 3 -->
-    <div id="sr-t3" style="position:absolute;text-align:center;padding:0 24px;opacity:0;will-change:opacity,transform;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:20px;">Your actual job</div>
-      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7vw,86px);font-weight:600;letter-spacing:-3px;line-height:1.05;max-width:800px;">3 things need<br><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">your judgment.</span></h2>
-      <p style="font-size:18px;color:var(--text-sec);margin-top:24px;line-height:1.7;max-width:440px;margin-left:auto;margin-right:auto;">That is what your accounting degree is for. Not the other 44.</p>
-    </div>
-
-    <!-- 3D Dashboard -->
-    <div style="position:absolute;bottom:6%;left:50%;transform:translateX(-50%);">
-      <div id="sr-dash" style="width:min(620px,90vw);opacity:0;will-change:opacity,transform;transform:perspective(1200px) rotateX(32deg) scale(0.82);transform-origin:bottom center;">
-        <div style="background:#18181B;border:1px solid #2A2A30;border-radius:16px;overflow:hidden;box-shadow:0 48px 120px rgba(0,0,0,0.85),0 0 80px rgba(78,201,224,0.08);">
-          <div style="background:#141418;border-bottom:1px solid #27272A;padding:13px 18px;display:flex;align-items:center;gap:8px;">
+    <!-- DASHBOARD ZONE — always lower portion, never overlaps text -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:50%;display:flex;align-items:flex-end;justify-content:center;padding-bottom:20px;">
+      <div id="sr-dash" style="width:min(640px,92vw);opacity:0;will-change:opacity,transform;transform:perspective(1200px) rotateX(28deg) scale(0.85) translateY(60px);transform-origin:bottom center;">
+        <div style="background:#18181B;border:1px solid #2A2A30;border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8),0 0 60px rgba(78,201,224,0.08);">
+          <div style="background:#141418;border-bottom:1px solid #27272A;padding:12px 18px;display:flex;align-items:center;gap:8px;">
             <div style="width:11px;height:11px;border-radius:50%;background:#FF5F57;"></div>
             <div style="width:11px;height:11px;border-radius:50%;background:#FFBD2E;"></div>
             <div style="width:11px;height:11px;border-radius:50%;background:#28CA41;"></div>
             <span style="font-size:11px;color:#52525B;margin-left:10px;font-family:monospace;">Aqqrue / October Reconciliation</span>
             <span style="margin-left:auto;font-size:11px;color:#10B981;font-weight:700;">93.6% auto-filed</span>
           </div>
-          <div style="padding:20px;display:flex;flex-direction:column;gap:10px;">
-            <div style="height:5px;background:#27272A;border-radius:3px;margin-bottom:4px;"><div style="height:100%;width:93.6%;background:linear-gradient(90deg,#4EC9E0,#C8B49A);border-radius:3px;"></div></div>
-            <div style="background:#141418;border-radius:10px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">
-              <div><div style="font-size:13px;color:#FAFAFA;font-weight:500;">Stripe payout — Oct 3</div><div style="font-size:11px;color:#52525B;margin-top:3px;">Revenue / Client Services</div></div>
-              <div style="text-align:right;"><div style="font-size:13px;color:#34D399;font-weight:700;">+$8,400.00</div><span style="font-size:9px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 8px;border-radius:4px;margin-top:4px;display:inline-block;">Auto-filed</span></div>
+          <div style="padding:18px;display:flex;flex-direction:column;gap:9px;">
+            <div style="height:4px;background:#27272A;border-radius:2px;margin-bottom:4px;"><div style="height:100%;width:93.6%;background:linear-gradient(90deg,#4EC9E0,#C8B49A);border-radius:2px;"></div></div>
+            <div style="background:#141418;border-radius:10px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:12px;color:#FAFAFA;font-weight:500;">Stripe payout — Oct 3</div><div style="font-size:11px;color:#52525B;margin-top:2px;">Revenue / Client Services</div></div>
+              <div style="text-align:right;"><div style="font-size:12px;color:#34D399;font-weight:700;">+$8,400.00</div><span style="font-size:9px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:3px;">Auto-filed</span></div>
             </div>
-            <div style="background:#141418;border-radius:10px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">
-              <div><div style="font-size:13px;color:#FAFAFA;font-weight:500;">AWS Invoice #4421</div><div style="font-size:11px;color:#52525B;margin-top:3px;">Operating Expenses / Cloud</div></div>
-              <div style="text-align:right;"><div style="font-size:13px;color:#FAFAFA;font-weight:700;">-$312.50</div><span style="font-size:9px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 8px;border-radius:4px;margin-top:4px;display:inline-block;">Auto-filed</span></div>
+            <div style="background:#141418;border-radius:10px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:12px;color:#FAFAFA;font-weight:500;">AWS Invoice #4421</div><div style="font-size:11px;color:#52525B;margin-top:2px;">Operating Expenses / Cloud</div></div>
+              <div style="text-align:right;"><div style="font-size:12px;color:#FAFAFA;font-weight:700;">-$312.50</div><span style="font-size:9px;font-weight:700;background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:3px;">Auto-filed</span></div>
             </div>
-            <div style="background:rgba(78,201,224,0.05);border:1px solid rgba(78,201,224,0.18);border-radius:10px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">
-              <div><div style="font-size:13px;color:#4EC9E0;font-weight:500;">Transfer — Acct ending 4422</div><div style="font-size:11px;color:#52525B;margin-top:3px;">Needs your review</div></div>
-              <div style="text-align:right;"><div style="font-size:13px;color:#C8B49A;font-weight:700;">-$5,000.00</div><span style="font-size:9px;font-weight:700;background:rgba(200,180,154,0.12);color:#C8B49A;border:1px solid rgba(200,180,154,0.25);padding:2px 8px;border-radius:4px;margin-top:4px;display:inline-block;">Review</span></div>
+            <div style="background:rgba(78,201,224,0.05);border:1px solid rgba(78,201,224,0.18);border-radius:10px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:12px;color:#4EC9E0;font-weight:500;">Transfer — Acct ending 4422</div><div style="font-size:11px;color:#52525B;margin-top:2px;">Needs your review</div></div>
+              <div style="text-align:right;"><div style="font-size:12px;color:#C8B49A;font-weight:700;">-$5,000.00</div><span style="font-size:9px;font-weight:700;background:rgba(200,180,154,0.12);color:#C8B49A;border:1px solid rgba(200,180,154,0.25);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:3px;">Review</span></div>
             </div>
           </div>
         </div>
@@ -905,7 +925,9 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 </div>
 
 <!-- CAPABILITIES -->
-<section id="capabilities">
+<section id="capabilities" style="position:relative;overflow:hidden;">
+  <div class="section-orb orb-blue" style="width:500px;height:500px;top:-100px;right:-150px;"></div>
+  <div class="section-orb orb-beige" style="width:400px;height:400px;bottom:-80px;left:-100px;"></div>
   <div class="container">
     <p class="section-label fade-up">Capabilities</p>
     <h2 class="section-heading fade-up">Six tasks your accountants were<br>definitely not hired to do.</h2>
@@ -1010,7 +1032,9 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 </section>
 
 <!-- DEMO -->
-<section id="demo">
+<section id="demo" style="position:relative;overflow:hidden;">
+  <div class="section-orb orb-teal" style="width:600px;height:600px;top:-200px;left:-200px;"></div>
+  <div class="section-orb orb-blue" style="width:380px;height:380px;bottom:-100px;right:-100px;"></div>
   <div class="container">
     <div class="demo-split">
       <div class="demo-copy">
@@ -1088,7 +1112,9 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 </section>
 
 <!-- HOW IT WORKS -->
-<section id="how">
+<section id="how" style="position:relative;overflow:hidden;">
+  <div class="section-orb orb-beige" style="width:500px;height:500px;top:-150px;right:-100px;"></div>
+  <div class="section-orb orb-blue" style="width:350px;height:350px;bottom:-100px;left:-80px;"></div>
   <div class="container">
     <p class="section-label fade-up">How It Works</p>
     <h2 class="section-heading fade-up">Three steps. One of them is just connecting your QuickBooks.</h2>
@@ -1425,6 +1451,87 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   tl.to(['#sr-t3','#sr-glow'], { opacity:0, duration:0.8 }, 7.5);
   tl.to('#sr-dash', { opacity:0, duration:0.6 }, 7.5);
 
+})();
+
+// ===== GSAP: CAPABILITIES 3D ENTRANCE =====
+(function(){
+  if(typeof gsap === 'undefined') return;
+  gsap.utils.toArray('.cap-card').forEach((card, i) => {
+    gsap.fromTo(card,
+      { opacity:0, y:80, rotateY: i%2===0 ? -15 : 15, scale:0.9 },
+      { opacity:1, y:0, rotateY:0, scale:1,
+        duration:1, ease:'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          end: 'top 50%',
+          scrub: false,
+          toggleActions: 'play none none none',
+        },
+        delay: (i % 3) * 0.1,
+      }
+    );
+  });
+})();
+
+// ===== GSAP: HOW IT WORKS STEPS =====
+(function(){
+  if(typeof gsap === 'undefined') return;
+  gsap.utils.toArray('.step').forEach((step, i) => {
+    gsap.fromTo(step,
+      { opacity:0, y:60, scale:0.92 },
+      { opacity:1, y:0, scale:1,
+        duration:0.9, ease:'power2.out',
+        scrollTrigger: {
+          trigger: step,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+        },
+        delay: i * 0.15,
+      }
+    );
+  });
+})();
+
+// ===== GSAP: IMPACT STATS POP =====
+(function(){
+  if(typeof gsap === 'undefined') return;
+  gsap.utils.toArray('.impact-card').forEach((card, i) => {
+    gsap.fromTo(card,
+      { opacity:0, y:50, scale:0.88 },
+      { opacity:1, y:0, scale:1,
+        duration:0.8, ease:'back.out(1.5)',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+        },
+        delay: i * 0.08,
+      }
+    );
+  });
+})();
+
+// ===== GSAP: DEMO SECTION FLOAT =====
+(function(){
+  if(typeof gsap === 'undefined') return;
+  const screen = document.querySelector('.demo-screen');
+  if(!screen) return;
+  gsap.fromTo(screen,
+    { opacity:0, y:80, rotateX:15 },
+    { opacity:1, y:0, rotateX:0,
+      duration:1.2, ease:'power3.out',
+      scrollTrigger: {
+        trigger: screen,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      }
+    }
+  );
+  // Subtle continuous bob after reveal
+  gsap.to(screen, {
+    y: -8, duration:3, ease:'sine.inOut', yoyo:true, repeat:-1, delay:1.5
+  });
 })();
 
 // ===== HERO CANVAS PARTICLES =====

@@ -475,40 +475,6 @@ section { padding: 100px 24px; }
 .demo-summary-left .lbl { font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.8px; margin-top: 2px; }
 .demo-summary-right { font-size: 12px; color: var(--text-muted); text-align: right; line-height: 1.6; }
 
-/* HOW IT WORKS */
-#how { background: var(--bg); }
-.steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 64px; position: relative; }
-.steps-row::before {
-  content: ''; position: absolute; top: 25px;
-  left: calc(16.67% + 14px); right: calc(16.67% + 14px); height: 1px;
-  background: linear-gradient(90deg, rgba(78,201,224,0.45) 0%, rgba(200,180,154,0.45) 100%);
-}
-.step-line { position: absolute; top: 25px; left: calc(16.67% + 14px); height: 2px; width: 0; background: var(--grad); transition: width 1.6s cubic-bezier(0.4,0,0.2,1); z-index: 2; }
-.step { padding: 0 24px; }
-.step-circle {
-  width: 50px; height: 50px; border-radius: 50%;
-  background: var(--surface); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center; margin-bottom: 22px;
-  position: relative; z-index: 3; transition: border-color 0.25s, box-shadow 0.25s;
-}
-.step:hover .step-circle { border-color: var(--blue); box-shadow: 0 0 18px rgba(99,102,241,0.22); }
-.step-n { font-size: 13px; font-weight: 800; color: var(--blue); }
-.step-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.3px; }
-.step-desc { font-size: 14px; color: var(--text-sec); line-height: 1.7; }
-
-/* IMPACT */
-#impact { background: var(--surface); }
-.impact-row {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
-  background: var(--border); margin-top: 56px;
-}
-.impact-card { padding: 44px 36px; background: var(--surface); transition: background 0.2s; }
-.impact-card:hover { background: #1d1d20; }
-.impact-big { font-size: 52px; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 12px; }
-.impact-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.2px; }
-.impact-body { font-size: 14px; color: var(--text-sec); line-height: 1.65; }
-
 /* CAPABILITY SCROLL STAGE */
 .cap-dot {
   width:7px; height:7px; border-radius:50%;
@@ -1333,64 +1299,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS (preview) -->
-<section id="how" style="padding:80px 0;background:var(--bg);position:relative;overflow:hidden;">
-  <div class="section-orb orb-blue" style="width:400px;height:400px;top:-80px;right:-80px;"></div>
-  <div class="container">
-    <p class="section-label fade-up">How It Works</p>
-    <h2 class="section-heading fade-up">Three steps. One of them is just<br>connecting your QuickBooks.</h2>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px;">
-      <div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 24px;transition:border-color 0.25s,transform 0.2s;" onmouseover="this.style.borderColor='rgba(78,201,224,0.28)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform=''">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;color:rgba(78,201,224,0.18);margin-bottom:14px;line-height:1;">01</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;">Connect Your Stack</div>
-        <div style="font-size:14px;color:var(--text-sec);line-height:1.72;">Link QuickBooks or Xero. Live in under five minutes. No migration.</div>
-      </div>
-      <div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 24px;transition:border-color 0.25s,transform 0.2s;" onmouseover="this.style.borderColor='rgba(78,201,224,0.28)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform=''">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;color:rgba(78,201,224,0.18);margin-bottom:14px;line-height:1;">02</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;">AI Does the Work</div>
-        <div style="font-size:14px;color:var(--text-sec);line-height:1.72;">Documents read, transactions categorized, books reconciled. Every time. Automatically.</div>
-      </div>
-      <div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 24px;transition:border-color 0.25s,transform 0.2s;" onmouseover="this.style.borderColor='rgba(78,201,224,0.28)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform=''">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;color:rgba(78,201,224,0.18);margin-bottom:14px;line-height:1;">03</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;">You Focus on Clients</div>
-        <div style="font-size:14px;color:var(--text-sec);line-height:1.72;">See only what needs your judgment. Everything else is handled.</div>
-      </div>
-    </div>
-    <div style="margin-top:32px;">
-      <a href="how-it-works.html" style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--blue);text-decoration:none;transition:gap 0.2s;" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='8px'">Full breakdown &#8599;</a>
-    </div>
-  </div>
-</section>
-
-<!-- IMPACT (preview) -->
-<section id="impact" style="padding:80px 0;background:var(--surface);position:relative;overflow:hidden;">
-  <div class="section-orb orb-blue" style="width:500px;height:500px;bottom:-120px;left:-100px;"></div>
-  <div class="container">
-    <p class="section-label fade-up">Impact</p>
-    <h2 class="section-heading fade-up">Warning: these numbers make your current<br>software deeply uncomfortable.</h2>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px;">
-      <div class="fade-up" style="background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:36px 28px;text-align:center;">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,6vw,64px);font-weight:600;letter-spacing:-2px;background:linear-gradient(135deg,#4EC9E0,#C8B49A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:12px;">12 min</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:8px;">Average Month-End Close</div>
-        <div style="font-size:13px;color:var(--text-muted);line-height:1.65;">What used to take a full Tuesday.</div>
-      </div>
-      <div class="fade-up" style="background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:36px 28px;text-align:center;">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,6vw,64px);font-weight:600;letter-spacing:-2px;background:linear-gradient(135deg,#4EC9E0,#C8B49A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:12px;">60%</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:8px;">Time Reclaimed Per Accountant</div>
-        <div style="font-size:13px;color:var(--text-muted);line-height:1.65;">Returned to client work and advisory.</div>
-      </div>
-      <div class="fade-up" style="background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:36px 28px;text-align:center;">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,6vw,64px);font-weight:600;letter-spacing:-2px;background:linear-gradient(135deg,#4EC9E0,#C8B49A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:12px;">99.1%</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:8px;">Categorization Accuracy</div>
-        <div style="font-size:13px;color:var(--text-muted);line-height:1.65;">Beats any human team we have benchmarked against.</div>
-      </div>
-    </div>
-    <div style="margin-top:32px;">
-      <a href="impact.html" style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--blue);text-decoration:none;transition:gap 0.2s;" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='8px'">Full data breakdown &#8599;</a>
     </div>
   </div>
 </section>

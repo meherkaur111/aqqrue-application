@@ -85,6 +85,33 @@ nav.scrolled {
 }
 .nav-links a:hover { color: var(--text); }
 
+/* NAV -- MEHER PILL */
+.nav-meher-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 13px 5px 9px; border-radius: 999px;
+  background: rgba(78,201,224,0.08); border: 1px solid rgba(78,201,224,0.24);
+  font-size: 12px; font-weight: 700; color: #A8E4F4 !important;
+  letter-spacing: 0.3px; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.nav-meher-pill:hover {
+  border-color: rgba(78,201,224,0.55) !important;
+  background: rgba(78,201,224,0.13);
+  box-shadow: 0 0 18px rgba(78,201,224,0.15);
+  color: #A8E4F4 !important;
+}
+.nav-meher-pill .pill-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--grad); flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(78,201,224,0.5);
+  animation: navPillPulse 2.2s ease-in-out infinite;
+}
+@keyframes navPillPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(78,201,224,0.55); }
+  60%  { box-shadow: 0 0 0 5px rgba(78,201,224,0); }
+  100% { box-shadow: 0 0 0 0 rgba(78,201,224,0); }
+}
+
 .btn-grad {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 9px 22px; border-radius: 8px;
@@ -316,6 +343,10 @@ section { padding: 100px 24px; }
 .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 500; letter-spacing: 0.5px; }
 
 @keyframes fadeup { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes badgePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(78,201,224,0.3),0 8px 32px rgba(0,0,0,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(78,201,224,0),0 8px 32px rgba(0,0,0,0.4); }
+}
 
 /* TRUSTED BY */
 #trusted { padding: 44px 24px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -804,6 +835,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <a href="#how">How It Works</a>
     <a href="#impact">Impact</a>
     <a href="#testimonials">Customers</a>
+    <a href="about-meher.html" class="nav-meher-pill"><span class="pill-dot"></span>Meet Meher &#8599;</a>
     <a href="#contact" class="btn-grad">Talk to our team</a>
   </div>
   <button class="hamburger" id="hamburger" onclick="openMobile()">
@@ -844,21 +876,25 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="hero-noise"></div>
   </div>
   <!-- Aqqrue × Meher floating badge -->
-  <a href="about-meher.html" style="
+  <a href="about-meher.html" id="meher-badge" style="
     position:absolute;bottom:36px;right:36px;z-index:10;
-    display:inline-flex;align-items:center;gap:10px;
-    padding:9px 18px 9px 12px;border-radius:999px;
-    background:rgba(9,9,11,0.7);backdrop-filter:blur(12px);
-    border:1px solid rgba(78,201,224,0.28);
+    display:inline-flex;align-items:center;gap:11px;
+    padding:11px 20px 11px 13px;border-radius:999px;
+    background:rgba(9,9,11,0.82);backdrop-filter:blur(16px);
+    border:1px solid rgba(78,201,224,0.38);
     font-size:13px;font-weight:700;color:var(--text);
-    text-decoration:none;
+    text-decoration:none;letter-spacing:0.1px;
     transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s;
-    box-shadow:0 0 24px rgba(78,201,224,0.1);
-  " onmouseover="this.style.borderColor='rgba(78,201,224,0.6)';this.style.boxShadow='0 0 32px rgba(78,201,224,0.22)';this.style.transform='translateY(-2px)'"
-     onmouseout="this.style.borderColor='rgba(78,201,224,0.28)';this.style.boxShadow='0 0 24px rgba(78,201,224,0.1)';this.style.transform=''">
-    <span style="width:28px;height:28px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800;flex-shrink:0;">M</span>
-    <span>Aqqrue <span style="opacity:0.5;margin:0 2px;">&times;</span> <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Meher</span></span>
-    <span style="font-size:10px;opacity:0.45;margin-left:2px;">&#8599;</span>
+    box-shadow:0 0 0 0 rgba(78,201,224,0.25),0 8px 32px rgba(0,0,0,0.4);
+    animation:badgePulse 3s ease-in-out infinite;
+  " onmouseover="this.style.borderColor='rgba(78,201,224,0.7)';this.style.boxShadow='0 0 36px rgba(78,201,224,0.28),0 8px 32px rgba(0,0,0,0.4)';this.style.transform='translateY(-3px)';this.style.animation='none'"
+     onmouseout="this.style.borderColor='rgba(78,201,224,0.38)';this.style.boxShadow='0 0 0 0 rgba(78,201,224,0.25),0 8px 32px rgba(0,0,0,0.4)';this.style.transform='';this.style.animation='badgePulse 3s ease-in-out infinite'">
+    <span style="width:30px;height:30px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:800;flex-shrink:0;box-shadow:0 0 12px rgba(78,201,224,0.3);">M</span>
+    <span style="display:flex;flex-direction:column;gap:1px;">
+      <span style="font-size:13px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Meet Meher</span>
+      <span style="font-size:10px;color:var(--text-muted);font-weight:500;">This is her application</span>
+    </span>
+    <span style="font-size:11px;color:rgba(78,201,224,0.7);margin-left:2px;">&#8599;</span>
   </a>
   <div class="hero-inner">
     <div class="hero-badge">AI Co-Pilot for Accountants</div>
